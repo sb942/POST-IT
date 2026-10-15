@@ -1,0 +1,4254 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <!-- 
+  ============================================================================
+  01. HTML DOCUMENT DECLARATION & METADATA
+  ============================================================================
+  Project: Post-it — Creative Marketing & Digital Presence Studio
+  Architecture: Single-File Production Experience (HTML5 + CSS3 + Three.js + GSAP)
+  Identity: Strict Monochromatic Swiss-Brutalist Editorial & Tactile 3D Paper Art
+-->
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0"
+    />
+    <title>Post-it — We Make Brands Impossible To Ignore</title>
+    <meta
+      name="description"
+      content="We don't just post content. We create reasons for people to notice, engage, and become customers. Reels, promotional films, posters, stories, product creatives, and campaign content."
+    />
+    <meta name="theme-color" content="#000000" />
+
+    <!-- ========================================================================
+       02. FONT IMPORTS & EXTERNAL LIBRARY SETUP
+       ======================================================================== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Three.js & GSAP + ScrollTrigger via Reliable CDNs -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+      defer
+    ></script>
+
+    <style>
+      /* ========================================================================
+       03. GLOBAL CSS VARIABLES & DESIGN TOKENS (STRICT MONOCHROME)
+       ======================================================================== */
+      :root {
+        --pure-black: #000000;
+        --near-black: #0a0a0a;
+        --dark-charcoal: #171717;
+        --mid-gray: #808080;
+        --light-gray: #d8d8d8;
+        --off-white: #f2f2f2;
+        --pure-white: #ffffff;
+
+        --border-dark: rgba(255, 255, 255, 0.16);
+        --border-dark-strong: rgba(255, 255, 255, 0.38);
+        --border-light: rgba(0, 0, 0, 0.15);
+        --border-light-strong: rgba(0, 0, 0, 0.45);
+
+        --font-display: "Anton", Impact, "Arial Black", sans-serif;
+        --font-grotesk:
+          "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-sans:
+          "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
+
+        --container-pad: clamp(1.15rem, 4vw, 4rem);
+        --nav-height: clamp(4.5rem, 6vw, 5.75rem);
+        --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+      }
+
+      /* ========================================================================
+       04. TYPOGRAPHY & FOUNDATIONAL STYLING
+       ======================================================================== */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        background-color: var(--pure-black);
+        color: var(--pure-white);
+        font-family: var(--font-sans);
+        font-size: 16px;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background-color: var(--pure-black);
+        color: var(--pure-white);
+        overflow-x: hidden;
+        width: 100%;
+        position: relative;
+        selection-background-color: var(--pure-white);
+        selection-color: var(--pure-black);
+      }
+
+      ::selection {
+        background-color: var(--pure-white);
+        color: var(--pure-black);
+      }
+
+      /* Accessible Keyboard Focus States */
+      :focus-visible {
+        outline: 2px solid var(--pure-white);
+        outline-offset: 4px;
+      }
+
+      .theme-light :focus-visible {
+        outline: 2px solid var(--pure-black);
+      }
+
+      /* Skip Link for Accessibility */
+      .skip-link {
+        position: fixed;
+        top: -100px;
+        left: 1rem;
+        background: var(--pure-white);
+        color: var(--pure-black);
+        padding: 0.75rem 1.25rem;
+        font-family: var(--font-grotesk);
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        z-index: 10000;
+        text-decoration: none;
+        transition: top 0.25s ease;
+      }
+      .skip-link:focus {
+        top: 1rem;
+      }
+
+      /* Subtle Film/Editorial Grain Overlay */
+      .editorial-grain {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 90;
+        opacity: 0.035;
+        background-image: radial-gradient(
+          rgba(255, 255, 255, 0.8) 1px,
+          transparent 0
+        );
+        background-size: 24px 24px;
+      }
+
+      /* Typography Utility Classes */
+      .display-monumental {
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        font-weight: 400;
+        line-height: 0.91;
+        letter-spacing: -0.015em;
+        font-size: clamp(3.1rem, 10.6vw, 10.5rem);
+        overflow-wrap: break-word;
+      }
+
+      .display-xl {
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        font-weight: 400;
+        line-height: 0.93;
+        letter-spacing: -0.01em;
+        font-size: clamp(2.5rem, 7.8vw, 7.6rem);
+      }
+
+      .display-lg {
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        font-weight: 400;
+        line-height: 0.96;
+        letter-spacing: -0.01em;
+        font-size: clamp(2rem, 5.2vw, 4.8rem);
+      }
+
+      .display-outline {
+        color: transparent;
+        -webkit-text-stroke: 1.5px var(--pure-white);
+      }
+
+      .theme-light .display-outline {
+        -webkit-text-stroke: 1.5px var(--pure-black);
+      }
+
+      .meta-tag {
+        font-family: var(--font-grotesk);
+        font-size: clamp(0.7rem, 0.85vw, 0.82rem);
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-weight: 600;
+        color: var(--mid-gray);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+      }
+
+      .meta-tag::before {
+        content: "";
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-color: currentColor;
+      }
+
+      /* Line Mask Reveal Wrapper */
+      .line-mask {
+        display: block;
+        overflow: hidden;
+        padding-bottom: 0.04em;
+      }
+
+      .line-inner {
+        display: block;
+        will-change: transform;
+      }
+
+      /* Brand Logo Mandatory Styling */
+      .brand-logo {
+        display: block;
+        width: 100%;
+        max-width: 135px;
+        height: auto;
+        max-height: 54px;
+        object-fit: contain;
+      }
+
+      .brand-logo-wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: var(--pure-white);
+        position: relative;
+      }
+
+      .logo-fallback-badge {
+        display: none;
+        font-family: var(--font-display);
+        font-size: 1.65rem;
+        letter-spacing: 0.04em;
+        padding: 0.15rem 0.65rem;
+        background: var(--pure-white);
+        color: var(--pure-black);
+        border: 1px solid var(--pure-white);
+        text-transform: uppercase;
+        line-height: 1;
+      }
+
+      /* Buttons & Interactive Controls */
+      .btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.85rem;
+        padding: clamp(0.95rem, 1.5vw, 1.2rem) clamp(1.5rem, 2.5vw, 2.3rem);
+        font-family: var(--font-grotesk);
+        font-size: clamp(0.78rem, 0.95vw, 0.9rem);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        text-decoration: none;
+        cursor: pointer;
+        border: 1px solid var(--pure-white);
+        transition:
+          background-color 0.35s var(--ease-out-expo),
+          color 0.35s var(--ease-out-expo),
+          border-color 0.35s var(--ease-out-expo),
+          transform 0.25s var(--ease-out-expo);
+        min-height: 48px;
+        user-select: none;
+      }
+
+      .btn-primary {
+        background-color: var(--pure-white);
+        color: var(--pure-black);
+        border-color: var(--pure-white);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--pure-black);
+        color: var(--pure-white);
+      }
+
+      .btn-secondary {
+        background-color: transparent;
+        color: var(--pure-white);
+        border-color: var(--border-dark-strong);
+      }
+
+      .btn-secondary:hover {
+        border-color: var(--pure-white);
+        background-color: var(--pure-white);
+        color: var(--pure-black);
+      }
+
+      .theme-light .btn-primary {
+        background-color: var(--pure-black);
+        color: var(--pure-white);
+        border-color: var(--pure-black);
+      }
+
+      .theme-light .btn-primary:hover {
+        background-color: transparent;
+        color: var(--pure-black);
+      }
+
+      .theme-light .btn-secondary {
+        background-color: transparent;
+        color: var(--pure-black);
+        border-color: var(--pure-black);
+      }
+
+      .theme-light .btn-secondary:hover {
+        background-color: var(--pure-black);
+        color: var(--pure-white);
+      }
+
+      .btn-arrow {
+        display: inline-block;
+        transition: transform 0.3s var(--ease-out-expo);
+      }
+
+      .btn:hover .btn-arrow {
+        transform: translate(3px, -3px);
+      }
+
+      /* Top Scroll Progress Bar */
+      .scroll-progress-track {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: rgba(255, 255, 255, 0.08);
+        z-index: 1000;
+        pointer-events: none;
+      }
+
+      .scroll-progress-bar {
+        height: 100%;
+        width: 0%;
+        background: var(--pure-white);
+        transform-origin: left center;
+      }
+
+      /* Custom Architectural Reticle Cursor (Desktop Only) */
+      .custom-cursor {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 28px;
+        height: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.75);
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.25s var(--ease-out-expo),
+          height 0.25s var(--ease-out-expo),
+          background-color 0.25s var(--ease-out-expo);
+        mix-blend-mode: difference;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-grotesk);
+        font-size: 0.55rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: var(--pure-black);
+        text-transform: uppercase;
+      }
+
+      .custom-cursor.is-active {
+        width: 72px;
+        height: 72px;
+        background-color: var(--pure-white);
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .custom-cursor {
+          display: flex;
+        }
+      }
+
+      /* ========================================================================
+       05. NAVIGATION & ARCHITECTURAL GRID SYSTEM
+       ======================================================================== */
+      .site-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: var(--nav-height);
+        z-index: 500;
+        background: rgba(0, 0, 0, 0.82);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border-dark);
+        transition:
+          background-color 0.35s ease,
+          border-color 0.35s ease;
+      }
+
+      .nav-container {
+        max-width: 1920px;
+        margin: 0 auto;
+        height: 100%;
+        padding: 0 var(--container-pad);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: clamp(1.25rem, 2.4vw, 2.75rem);
+        list-style: none;
+      }
+
+      .nav-link {
+        font-family: var(--font-grotesk);
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--light-gray);
+        text-decoration: none;
+        position: relative;
+        padding: 0.4rem 0;
+        transition: color 0.25s ease;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: var(--pure-white);
+        transform: scaleX(0);
+        transform-origin: right center;
+        transition: transform 0.35s var(--ease-out-expo);
+      }
+
+      .nav-link:hover {
+        color: var(--pure-white);
+      }
+
+      .nav-link:hover::after {
+        transform: scaleX(1);
+        transform-origin: left center;
+      }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .nav-cta {
+        padding: 0.7rem 1.25rem;
+        min-height: 40px;
+        font-size: 0.74rem;
+      }
+
+      /* Mobile Hamburger Button */
+      .menu-toggle {
+        display: none;
+        background: transparent;
+        border: 1px solid var(--border-dark-strong);
+        color: var(--pure-white);
+        width: 46px;
+        height: 46px;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        z-index: 600;
+      }
+
+      .menu-toggle-bar {
+        width: 20px;
+        height: 1.5px;
+        background-color: var(--pure-white);
+        transition:
+          transform 0.3s ease,
+          opacity 0.3s ease;
+      }
+
+      .menu-toggle[aria-expanded="true"] .menu-toggle-bar:nth-child(1) {
+        transform: translateY(3.25px) rotate(45deg);
+      }
+      .menu-toggle[aria-expanded="true"] .menu-toggle-bar:nth-child(2) {
+        transform: translateY(-3.25px) rotate(-45deg);
+      }
+
+      /* Mobile Fullscreen Menu Overlay */
+      .mobile-menu {
+        position: fixed;
+        inset: 0;
+        background-color: var(--pure-black);
+        z-index: 490;
+        padding: calc(var(--nav-height) + 2rem) var(--container-pad) 2.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transform: translateY(-100%);
+        visibility: hidden;
+        transition:
+          transform 0.55s var(--ease-in-out-quart),
+          visibility 0.55s;
+        border-bottom: 1px solid var(--border-dark-strong);
+        overflow-y: auto;
+      }
+
+      .mobile-menu.is-open {
+        transform: translateY(0%);
+        visibility: visible;
+      }
+
+      .mobile-nav-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid var(--border-dark);
+      }
+
+      .mobile-nav-item {
+        border-bottom: 1px solid var(--border-dark);
+      }
+
+      .mobile-nav-link {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        padding: 1.15rem 0;
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 8vw, 3.25rem);
+        color: var(--pure-white);
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0.01em;
+      }
+
+      .mobile-nav-index {
+        font-family: var(--font-grotesk);
+        font-size: 0.8rem;
+        color: var(--mid-gray);
+      }
+
+      /* Section Containers & Structural Borders */
+      .section-shell {
+        position: relative;
+        width: 100%;
+        z-index: 10;
+        border-bottom: 1px solid var(--border-dark);
+      }
+
+      .section-shell.theme-light {
+        background-color: var(--pure-white);
+        color: var(--pure-black);
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .section-shell.theme-dark {
+        background-color: var(--pure-black);
+        color: var(--pure-white);
+      }
+
+      .section-shell.theme-charcoal {
+        background-color: var(--near-black);
+        color: var(--pure-white);
+      }
+
+      .section-shell.theme-transparent {
+        background-color: rgba(0, 0, 0, 0.45);
+        color: var(--pure-white);
+      }
+
+      .container-inner {
+        max-width: 1920px;
+        margin: 0 auto;
+        padding: clamp(4.5rem, 10vw, 9.5rem) var(--container-pad);
+      }
+
+      .structural-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-bottom: 1.5rem;
+        margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+        border-bottom: 1px solid currentColor;
+        opacity: 0.85;
+      }
+
+      /* ========================================================================
+       06. THREE.JS BACKGROUND CANVAS & HERO STAGE
+       ======================================================================== */
+      #webgl-stage {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100vh;
+        z-index: 1;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      #webgl-canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .hero-section {
+        position: relative;
+        min-height: 100vh;
+        padding-top: var(--nav-height);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        z-index: 10;
+        border-bottom: 1px solid var(--border-dark);
+        background: radial-gradient(
+          circle at 72% 45%,
+          rgba(255, 255, 255, 0.03),
+          rgba(0, 0, 0, 0.75) 70%
+        );
+      }
+
+      .hero-inner {
+        max-width: 1920px;
+        width: 100%;
+        margin: 0 auto;
+        padding: clamp(2rem, 5vw, 4.5rem) var(--container-pad);
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 1.5rem;
+        align-items: end;
+        flex: 1;
+      }
+
+      .hero-copy-col {
+        grid-column: 1 / span 12;
+        position: relative;
+        z-index: 5;
+      }
+
+      .hero-kicker-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.25rem;
+        margin-bottom: clamp(1.25rem, 2.5vw, 2.25rem);
+      }
+
+      .hero-headline-primary {
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        font-size: clamp(3.3rem, 11.4vw, 11.5rem);
+        line-height: 0.89;
+        letter-spacing: -0.015em;
+        color: var(--pure-white);
+        margin-bottom: clamp(0.6rem, 1.5vw, 1.25rem);
+      }
+
+      .hero-headline-secondary {
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        font-size: clamp(2.1rem, 6.6vw, 6.75rem);
+        line-height: 0.94;
+        letter-spacing: -0.01em;
+        color: var(--pure-white);
+        max-width: 18ch;
+      }
+
+      .hero-headline-secondary .outline-word {
+        color: transparent;
+        -webkit-text-stroke: 1.5px var(--pure-white);
+      }
+
+      .hero-bottom-grid {
+        margin-top: clamp(2rem, 4.5vw, 4rem);
+        padding-top: clamp(1.5rem, 3vw, 2.5rem);
+        border-top: 1px solid var(--border-dark);
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 1.5rem;
+        align-items: end;
+      }
+
+      .hero-manifesto {
+        grid-column: 1 / span 6;
+        font-size: clamp(1rem, 1.35vw, 1.28rem);
+        color: var(--light-gray);
+        max-width: 50ch;
+        line-height: 1.55;
+      }
+
+      .hero-manifesto strong {
+        color: var(--pure-white);
+        font-weight: 600;
+      }
+
+      .hero-cta-group {
+        grid-column: 7 / span 6;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: flex-end;
+      }
+
+      .hero-ticker-bar {
+        border-top: 1px solid var(--border-dark);
+        background: rgba(10, 10, 10, 0.9);
+        padding: 0.85rem var(--container-pad);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: var(--font-grotesk);
+        font-size: 0.74rem;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--mid-gray);
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .scroll-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--pure-white);
+        text-decoration: none;
+      }
+
+      .scroll-line {
+        width: 42px;
+        height: 1px;
+        background: var(--border-dark-strong);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .scroll-line::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        background: var(--pure-white);
+        animation: scrollPulse 1.8s infinite ease-in-out;
+      }
+
+      @keyframes scrollPulse {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(220%);
+        }
+      }
+
+      /* ========================================================================
+       07. SECTION 1: THE ATTENTION ECONOMY
+       ======================================================================== */
+      .attention-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: clamp(1.5rem, 3.5vw, 3.5rem);
+        align-items: center;
+      }
+
+      .attention-title-col {
+        grid-column: 1 / span 7;
+      }
+
+      .attention-interactive-col {
+        grid-column: 8 / span 5;
+      }
+
+      .attention-lead {
+        margin-top: clamp(1.5rem, 3vw, 2.75rem);
+        font-size: clamp(1.25rem, 2.2vw, 2.1rem);
+        line-height: 1.32;
+        font-weight: 500;
+        max-width: 32ch;
+      }
+
+      /* Interactive Frame Inspector Component */
+      .frame-inspector {
+        border: 1px solid var(--pure-black);
+        background: var(--off-white);
+        padding: clamp(1.25rem, 2.5vw, 2rem);
+        position: relative;
+      }
+
+      .frame-inspector-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border-light);
+        padding-bottom: 0.85rem;
+        margin-bottom: 1.25rem;
+        font-family: var(--font-grotesk);
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+
+      .frame-stage {
+        aspect-ratio: 9 / 11;
+        background: var(--pure-black);
+        color: var(--pure-white);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1.5rem;
+        border: 1px solid var(--pure-black);
+      }
+
+      .frame-scanline {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--pure-white);
+        opacity: 0.55;
+        pointer-events: none;
+        animation: scanVertical 3.6s infinite alternate ease-in-out;
+      }
+
+      @keyframes scanVertical {
+        0% {
+          top: 6%;
+        }
+        100% {
+          top: 94%;
+        }
+      }
+
+      .frame-tabs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .frame-tab-btn {
+        background: transparent;
+        border: 1px solid var(--pure-black);
+        color: var(--pure-black);
+        font-family: var(--font-grotesk);
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 0.65rem 0.5rem;
+        cursor: pointer;
+        transition:
+          background-color 0.2s ease,
+          color 0.2s ease;
+      }
+
+      .frame-tab-btn.is-active,
+      .frame-tab-btn:hover {
+        background: var(--pure-black);
+        color: var(--pure-white);
+      }
+
+      /* ========================================================================
+       08. SECTION 2: WHAT WE DELIVER (EDITORIAL STORYTELLING)
+       ======================================================================== */
+      .deliver-chapter-list {
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid var(--border-dark);
+        margin-top: clamp(2.5rem, 5vw, 4.5rem);
+      }
+
+      .deliver-chapter {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 1.5rem;
+        padding: clamp(2.25rem, 4.5vw, 4rem) 0;
+        border-bottom: 1px solid var(--border-dark);
+        align-items: start;
+      }
+
+      .deliver-index {
+        grid-column: 1 / span 2;
+        font-family: var(--font-grotesk);
+        font-size: 0.85rem;
+        letter-spacing: 0.14em;
+        color: var(--mid-gray);
+        text-transform: uppercase;
+      }
+
+      .deliver-statement {
+        grid-column: 3 / span 4;
+        font-family: var(--font-display);
+        font-size: clamp(1.75rem, 3.3vw, 3.2rem);
+        line-height: 0.98;
+        text-transform: uppercase;
+      }
+
+      .deliver-body {
+        grid-column: 7 / span 6;
+        font-size: clamp(1.05rem, 1.45vw, 1.38rem);
+        line-height: 1.62;
+        color: var(--light-gray);
+      }
+
+      .deliver-climax-box {
+        margin-top: clamp(3.5rem, 7vw, 6.5rem);
+        padding: clamp(2.5rem, 5vw, 5rem);
+        border: 1px solid var(--pure-white);
+        background: var(--near-black);
+        position: relative;
+      }
+
+      /* ========================================================================
+       09. SECTION 3: OUR CREATIVE CAPABILITIES (ASYMMETRICAL SYSTEM)
+       ======================================================================== */
+      .capabilities-layout {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: clamp(1.5rem, 3vw, 3rem);
+        align-items: start;
+      }
+
+      .capabilities-list {
+        grid-column: 1 / span 7;
+        border-top: 1px solid var(--pure-black);
+      }
+
+      .capability-row {
+        border-bottom: 1px solid var(--pure-black);
+        padding: clamp(1.5rem, 2.8vw, 2.5rem) 0;
+        cursor: pointer;
+        transition:
+          padding-left 0.35s var(--ease-out-expo),
+          background-color 0.3s ease;
+      }
+
+      .capability-row:hover,
+      .capability-row.is-active {
+        padding-left: 1.25rem;
+        background-color: var(--off-white);
+      }
+
+      .capability-row-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .capability-num {
+        font-family: var(--font-grotesk);
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        color: var(--mid-gray);
+      }
+
+      .capability-title {
+        font-family: var(--font-display);
+        font-size: clamp(1.85rem, 3.8vw, 3.6rem);
+        line-height: 0.96;
+        text-transform: uppercase;
+        flex: 1;
+      }
+
+      .capability-ratio-tag {
+        font-family: var(--font-grotesk);
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 0.25rem 0.6rem;
+        border: 1px solid var(--pure-black);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .capability-desc {
+        margin-top: 0.85rem;
+        font-size: clamp(0.95rem, 1.15vw, 1.12rem);
+        color: var(--dark-charcoal);
+        max-width: 58ch;
+        line-height: 1.55;
+      }
+
+      .capabilities-preview-panel {
+        grid-column: 8 / span 5;
+        position: sticky;
+        top: calc(var(--nav-height) + 2rem);
+        border: 1px solid var(--pure-black);
+        background: var(--pure-black);
+        color: var(--pure-white);
+        padding: 1.5rem;
+      }
+
+      .capability-canvas-wrap {
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        border: 1px solid var(--border-dark-strong);
+        position: relative;
+        overflow: hidden;
+        background: var(--near-black);
+      }
+
+      #capability-preview-canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      /* ========================================================================
+       10. SECTION 4: THE CREATIVE PLAYGROUND (3D SPATIAL GALLERY)
+       ======================================================================== */
+      .playground-section {
+        min-height: 115vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.88) 0%,
+          rgba(0, 0, 0, 0.32) 50%,
+          rgba(0, 0, 0, 0.9) 100%
+        );
+      }
+
+      .playground-hud {
+        border: 1px solid var(--border-dark-strong);
+        background: rgba(10, 10, 10, 0.84);
+        backdrop-filter: blur(10px);
+        padding: clamp(1.25rem, 2.5vw, 2.25rem);
+        max-width: 680px;
+      }
+
+      .playground-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        margin-top: 1.5rem;
+      }
+
+      .playground-mode-btn {
+        background: transparent;
+        border: 1px solid var(--border-dark-strong);
+        color: var(--pure-white);
+        font-family: var(--font-grotesk);
+        font-size: 0.74rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        padding: 0.75rem 1.15rem;
+        cursor: pointer;
+        transition: all 0.25s ease;
+      }
+
+      .playground-mode-btn.is-active,
+      .playground-mode-btn:hover {
+        background: var(--pure-white);
+        color: var(--pure-black);
+        border-color: var(--pure-white);
+      }
+
+      .playground-nodes-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 1rem;
+        margin-top: clamp(2.5rem, 6vw, 5rem);
+      }
+
+      .playground-node-card {
+        border: 1px solid var(--border-dark-strong);
+        background: rgba(0, 0, 0, 0.78);
+        padding: 1.15rem;
+        transition:
+          transform 0.35s var(--ease-out-expo),
+          border-color 0.35s ease;
+      }
+
+      .playground-node-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--pure-white);
+      }
+
+      /* ========================================================================
+       11. SECTION 5: THE WORK (EDITORIAL CONCEPTUAL PORTFOLIO)
+       ======================================================================== */
+      .work-disclaimer-banner {
+        border: 1px solid var(--border-dark-strong);
+        background: var(--near-black);
+        padding: 1rem 1.35rem;
+        margin-bottom: clamp(2.5rem, 5vw, 4rem);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+        font-family: var(--font-grotesk);
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--light-gray);
+      }
+
+      .work-showcase-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: clamp(1.75rem, 3.5vw, 3.5rem);
+      }
+
+      .work-panel {
+        border: 1px solid var(--border-dark-strong);
+        background: var(--near-black);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: border-color 0.35s ease;
+      }
+
+      .work-panel:hover {
+        border-color: var(--pure-white);
+      }
+
+      .work-panel-span-7 {
+        grid-column: 1 / span 7;
+      }
+
+      .work-panel-span-5 {
+        grid-column: 8 / span 5;
+      }
+
+      .work-panel-span-5-left {
+        grid-column: 1 / span 5;
+      }
+
+      .work-panel-span-7-right {
+        grid-column: 6 / span 7;
+      }
+
+      .work-media-frame {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        background: var(--pure-black);
+        border-bottom: 1px solid var(--border-dark);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .work-canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .work-badge-overlay {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        background: var(--pure-black);
+        color: var(--pure-white);
+        border: 1px solid var(--pure-white);
+        padding: 0.3rem 0.65rem;
+        font-family: var(--font-grotesk);
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .work-panel-body {
+        padding: clamp(1.35rem, 2.5vw, 2.25rem);
+      }
+
+      .work-format-meta {
+        font-family: var(--font-grotesk);
+        font-size: 0.74rem;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--mid-gray);
+        margin-bottom: 0.6rem;
+      }
+
+      .work-title {
+        font-family: var(--font-display);
+        font-size: clamp(1.75rem, 3vw, 2.85rem);
+        line-height: 0.98;
+        text-transform: uppercase;
+        margin-bottom: 0.85rem;
+      }
+
+      .work-summary {
+        font-size: 0.98rem;
+        color: var(--light-gray);
+        line-height: 1.55;
+        margin-bottom: 1.5rem;
+      }
+
+      /* ========================================================================
+       12. SECTION 6: FROM VISIBILITY TO BUSINESS VALUE
+       ======================================================================== */
+      .value-progression-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border-top: 1px solid var(--pure-black);
+        border-left: 1px solid var(--pure-black);
+        margin-top: clamp(2.5rem, 5vw, 4.5rem);
+      }
+
+      .value-stage-card {
+        border-right: 1px solid var(--pure-black);
+        border-bottom: 1px solid var(--pure-black);
+        padding: clamp(1.75rem, 3vw, 2.75rem);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 360px;
+        background: var(--pure-white);
+        color: var(--pure-black);
+        transition:
+          background-color 0.35s ease,
+          color 0.35s ease;
+      }
+
+      .value-stage-card:hover {
+        background: var(--pure-black);
+        color: var(--pure-white);
+      }
+
+      .value-stage-num {
+        font-family: var(--font-grotesk);
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+      }
+
+      .value-stage-title {
+        font-family: var(--font-display);
+        font-size: clamp(2.1rem, 3.6vw, 3.4rem);
+        line-height: 0.94;
+        text-transform: uppercase;
+        margin: 1.75rem 0 1rem;
+      }
+
+      .value-stage-copy {
+        font-size: 0.98rem;
+        line-height: 1.55;
+        opacity: 0.86;
+      }
+
+      /* ========================================================================
+       13. SECTION 7: THE FINAL CONVERSION & PROJECT BRIEF CONFIGURATOR
+       ======================================================================== */
+      .conversion-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: clamp(2rem, 4vw, 4rem);
+        align-items: start;
+      }
+
+      .conversion-left {
+        grid-column: 1 / span 7;
+      }
+
+      .conversion-right {
+        grid-column: 8 / span 5;
+        border: 1px solid var(--border-dark-strong);
+        background: var(--near-black);
+        padding: clamp(1.5rem, 3vw, 2.5rem);
+      }
+
+      .brief-chip-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+        margin: 1rem 0 1.5rem;
+      }
+
+      .brief-chip {
+        background: transparent;
+        border: 1px solid var(--border-dark-strong);
+        color: var(--light-gray);
+        font-family: var(--font-grotesk);
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 0.55rem 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .brief-chip.is-selected {
+        background: var(--pure-white);
+        color: var(--pure-black);
+        border-color: var(--pure-white);
+      }
+
+      .brief-input {
+        width: 100%;
+        background: var(--pure-black);
+        border: 1px solid var(--border-dark-strong);
+        color: var(--pure-white);
+        padding: 0.9rem 1rem;
+        font-family: var(--font-sans);
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+      }
+
+      .brief-input:focus {
+        outline: none;
+        border-color: var(--pure-white);
+      }
+
+      /* ========================================================================
+       14. SECTION 8: THE FOOTER & MODAL DRAWER
+       ======================================================================== */
+      .site-footer {
+        background: var(--pure-black);
+        color: var(--pure-white);
+        border-top: 1px solid var(--border-dark-strong);
+        position: relative;
+        z-index: 10;
+      }
+
+      .footer-inner {
+        max-width: 1920px;
+        margin: 0 auto;
+        padding: clamp(3.5rem, 6vw, 5.5rem) var(--container-pad) 2.5rem;
+      }
+
+      .footer-top-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 2rem;
+        padding-bottom: 3rem;
+        border-bottom: 1px solid var(--border-dark);
+      }
+
+      .footer-brand-col {
+        grid-column: 1 / span 5;
+      }
+
+      .footer-nav-col {
+        grid-column: 6 / span 3;
+      }
+
+      .footer-contact-col {
+        grid-column: 9 / span 4;
+      }
+
+      .footer-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+        margin-top: 1rem;
+      }
+
+      .footer-list a {
+        color: var(--light-gray);
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: color 0.2s ease;
+      }
+
+      .footer-list a:hover {
+        color: var(--pure-white);
+      }
+
+      .footer-bottom-bar {
+        padding-top: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        font-family: var(--font-grotesk);
+        font-size: 0.75rem;
+        color: var(--mid-gray);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      /* Case Study / Concept Modal Drawer */
+      .concept-modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        z-index: 2000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--container-pad);
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.35s ease,
+          visibility 0.35s ease;
+      }
+
+      .concept-modal-backdrop.is-open {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .concept-modal-dialog {
+        background: var(--pure-black);
+        border: 1px solid var(--pure-white);
+        max-width: 760px;
+        width: 100%;
+        padding: clamp(1.5rem, 3.5vw, 3rem);
+        position: relative;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      /* ========================================================================
+       15. RESPONSIVE BREAKPOINTS (320px, 375px, 430px, 768px, 1024px, 1440px+)
+       ======================================================================== */
+      @media (max-width: 1120px) {
+        .attention-title-col,
+        .attention-interactive-col,
+        .capabilities-list,
+        .capabilities-preview-panel,
+        .work-panel-span-7,
+        .work-panel-span-5,
+        .work-panel-span-5-left,
+        .work-panel-span-7-right,
+        .conversion-left,
+        .conversion-right {
+          grid-column: 1 / span 12;
+        }
+
+        .capabilities-preview-panel {
+          position: relative;
+          top: 0;
+          margin-top: 1.5rem;
+        }
+
+        .value-progression-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .playground-nodes-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 900px) {
+        .nav-links,
+        .nav-cta-desktop {
+          display: none;
+        }
+
+        .menu-toggle {
+          display: inline-flex;
+        }
+
+        .hero-manifesto,
+        .hero-cta-group {
+          grid-column: 1 / span 12;
+          justify-content: flex-start;
+        }
+
+        .deliver-index {
+          grid-column: 1 / span 12;
+        }
+        .deliver-statement {
+          grid-column: 1 / span 12;
+        }
+        .deliver-body {
+          grid-column: 1 / span 12;
+        }
+
+        .footer-brand-col,
+        .footer-nav-col,
+        .footer-contact-col {
+          grid-column: 1 / span 12;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .brand-logo {
+          max-width: 112px;
+        }
+
+        .value-progression-grid,
+        .playground-nodes-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-cta-group .btn {
+          width: 100%;
+        }
+
+        .capability-row-head {
+          flex-wrap: wrap;
+        }
+      }
+
+      /* Reduced Motion Preferences */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Top Scroll Progress Indicator -->
+    <div class="scroll-progress-track" aria-hidden="true">
+      <div class="scroll-progress-bar" id="scroll-progress-bar"></div>
+    </div>
+
+    <!-- Subtle Editorial Grain -->
+    <div class="editorial-grain" aria-hidden="true"></div>
+
+    <!-- Custom Architectural Cursor -->
+    <div class="custom-cursor" id="custom-cursor" aria-hidden="true">
+      <span id="cursor-label"></span>
+    </div>
+
+    <!-- ========================================================================
+       06. NAVIGATION MARKUP (USES ACTUAL ./1.JPEG LOGO ASSET)
+       ======================================================================== -->
+    <header class="site-header" id="site-header">
+      <div class="nav-container">
+        <a href="#hero" class="brand-logo-wrap" aria-label="Post-it Home">
+          <img
+            src="./1.JPEG"
+            alt="Post-it company logo"
+            class="brand-logo"
+            onload="
+              this.nextElementSibling.style.display = 'none';
+              this.style.display = 'block';
+            "
+            onerror="
+              this.style.display = 'none';
+              this.nextElementSibling.style.display = 'inline-block';
+            "
+          />
+          <span class="logo-fallback-badge" aria-hidden="true">POST-IT</span>
+        </a>
+
+        <nav aria-label="Primary Navigation">
+          <ul class="nav-links">
+            <li>
+              <a href="#attention-economy" class="nav-link">01 / Philosophy</a>
+            </li>
+            <li>
+              <a href="#what-we-deliver" class="nav-link">02 / Deliverables</a>
+            </li>
+            <li>
+              <a href="#capabilities" class="nav-link">03 / Capabilities</a>
+            </li>
+            <li>
+              <a href="#creative-playground" class="nav-link"
+                >04 / Playground</a
+              >
+            </li>
+            <li><a href="#the-work" class="nav-link">05 / The Work</a></li>
+            <li><a href="#business-value" class="nav-link">06 / Growth</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <a
+            href="#contact"
+            class="btn btn-primary nav-cta nav-cta-desktop"
+            data-cursor="GROW"
+          >
+            LET'S GROW YOUR BRAND <span class="btn-arrow">↗</span>
+          </a>
+          <button
+            type="button"
+            class="menu-toggle"
+            id="menu-toggle"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+            aria-label="Toggle navigation menu"
+          >
+            <span class="menu-toggle-bar"></span>
+            <span class="menu-toggle-bar"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <ul class="mobile-nav-list">
+        <li class="mobile-nav-item">
+          <a href="#attention-economy" class="mobile-nav-link">
+            <span>Attention Economy</span>
+            <span class="mobile-nav-index">01</span>
+          </a>
+        </li>
+        <li class="mobile-nav-item">
+          <a href="#what-we-deliver" class="mobile-nav-link">
+            <span>What We Deliver</span>
+            <span class="mobile-nav-index">02</span>
+          </a>
+        </li>
+        <li class="mobile-nav-item">
+          <a href="#capabilities" class="mobile-nav-link">
+            <span>Capabilities</span>
+            <span class="mobile-nav-index">03</span>
+          </a>
+        </li>
+        <li class="mobile-nav-item">
+          <a href="#creative-playground" class="mobile-nav-link">
+            <span>Creative Playground</span>
+            <span class="mobile-nav-index">04</span>
+          </a>
+        </li>
+        <li class="mobile-nav-item">
+          <a href="#the-work" class="mobile-nav-link">
+            <span>The Work</span>
+            <span class="mobile-nav-index">05</span>
+          </a>
+        </li>
+        <li class="mobile-nav-item">
+          <a href="#business-value" class="mobile-nav-link">
+            <span>Business Value</span>
+            <span class="mobile-nav-index">06</span>
+          </a>
+        </li>
+        <li class="mobile-nav-item">
+          <a href="#contact" class="mobile-nav-link">
+            <span>Start A Project</span>
+            <span class="mobile-nav-index">07</span>
+          </a>
+        </li>
+      </ul>
+
+      <div style="margin-top: 2rem">
+        <p class="meta-tag" style="margin-bottom: 1rem">
+          DIRECT STUDIO DISPATCH
+        </p>
+        <p
+          style="
+            font-family: var(--font-grotesk);
+            font-size: 0.95rem;
+            color: var(--light-gray);
+            margin-bottom: 1.25rem;
+          "
+        >
+          mahajansrujan999@gamil.com &nbsp;/&nbsp; +91 7385329009
+        </p>
+        <a href="#contact" class="btn btn-primary" style="width: 100%">
+          LET'S GROW YOUR BRAND <span class="btn-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ========================================================================
+       07. HERO MARKUP & THREE.JS SCULPTURAL CANVAS
+       ======================================================================== -->
+    <div id="webgl-stage" aria-hidden="true">
+      <canvas id="webgl-canvas"></canvas>
+    </div>
+
+    <main id="main-content">
+      <section class="hero-section" id="hero">
+        <div class="hero-inner">
+          <div class="hero-copy-col">
+            <div class="hero-kicker-bar" id="hero-kicker">
+              <span class="meta-tag"
+                >CREATIVE MARKETING &amp; CONTENT PRODUCTION STUDIO</span
+              >
+              <span
+                style="
+                  font-family: var(--font-grotesk);
+                  font-size: 0.75rem;
+                  color: var(--mid-gray);
+                  letter-spacing: 0.14em;
+                  text-transform: uppercase;
+                "
+              >
+                [REELS / FILMS / POSTERS / STORIES / CAMPAIGNS]
+              </span>
+            </div>
+
+            <h1 class="hero-headline-primary" id="hero-title-main">
+              <span class="line-mask"
+                ><span class="line-inner">WE DON'T JUST POST.</span></span
+              >
+            </h1>
+
+            <p class="hero-headline-secondary" id="hero-title-sub">
+              <span class="line-mask"
+                ><span class="line-inner"
+                  >WE MAKE BRANDS
+                  <span class="outline-word">IMPOSSIBLE</span> TO IGNORE.</span
+                ></span
+              >
+            </p>
+
+            <div class="hero-bottom-grid" id="hero-bottom">
+              <p class="hero-manifesto">
+                <strong
+                  >WE DON'T JUST POST CONTENT. WE CREATE REASONS FOR PEOPLE TO
+                  NOTICE, ENGAGE, AND BECOME CUSTOMERS.</strong
+                >
+                Purpose-built short-form video, promotional films, posters, and
+                platform-native campaigns engineered to turn attention into
+                business growth.
+              </p>
+
+              <div class="hero-cta-group">
+                <a href="#the-work" class="btn btn-primary" data-cursor="VIEW">
+                  EXPLORE OUR WORK <span class="btn-arrow">↘</span>
+                </a>
+                <a
+                  href="#contact"
+                  class="btn btn-secondary"
+                  data-cursor="START"
+                >
+                  LET'S GROW YOUR BRAND <span class="btn-arrow">↗</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-ticker-bar">
+          <span
+            >3D SCULPTURAL PAPER &amp; FRAME ARCHITECTURE // INTERACTIVE
+            STAGE</span
+          >
+          <a href="#attention-economy" class="scroll-indicator">
+            <span>SCROLL TO EXPERIENCE</span>
+            <span class="scroll-line"></span>
+          </a>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+         08. SECTION 1: THE ATTENTION ECONOMY
+         ====================================================================== -->
+      <section class="section-shell theme-light" id="attention-economy">
+        <div class="container-inner">
+          <div class="structural-header">
+            <span class="meta-tag" style="color: var(--pure-black)"
+              >SECTION 01 // THE ATTENTION ECONOMY</span
+            >
+            <span
+              style="
+                font-family: var(--font-grotesk);
+                font-size: 0.75rem;
+                font-weight: 700;
+                letter-spacing: 0.14em;
+              "
+            >
+              STOP THE THUMB. HOLD THE FRAME.
+            </span>
+          </div>
+
+          <div class="attention-grid">
+            <div class="attention-title-col">
+              <h2 class="display-monumental reveal-headline">
+                <span class="line-mask"
+                  ><span class="line-inner">ATTENTION</span></span
+                >
+                <span class="line-mask"
+                  ><span class="line-inner">IS EARNED.</span></span
+                >
+              </h2>
+              <p class="attention-lead reveal-fade">
+                Every scroll is an opportunity. Every frame is a chance to make
+                someone stop, look, and remember.
+              </p>
+              <p
+                style="
+                  margin-top: 1.5rem;
+                  font-size: 1.05rem;
+                  color: var(--dark-charcoal);
+                  max-width: 52ch;
+                  line-height: 1.65;
+                "
+                class="reveal-fade"
+              >
+                Audiences move past ordinary templates in milliseconds. When a
+                brand relies on routine filler posts, it blends into the feed.
+                We art-direct every frame, cut, headline, and visual hook so
+                your brand commands attention immediately.
+              </p>
+            </div>
+
+            <div class="attention-interactive-col reveal-fade">
+              <div
+                class="frame-inspector"
+                aria-label="Interactive Attention Frame Diagnostic"
+              >
+                <div class="frame-inspector-top">
+                  <span>FRAME DIAGNOSTIC // 9:16 VERTICAL</span>
+                  <span id="frame-timecode">00:00:01:14</span>
+                </div>
+
+                <div class="frame-stage" id="frame-stage">
+                  <div class="frame-scanline"></div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      font-family: var(--font-grotesk);
+                      font-size: 0.72rem;
+                      letter-spacing: 0.1em;
+                      color: var(--mid-gray);
+                    "
+                  >
+                    <span id="inspector-tag">PHASE 01 // VISUAL HOOK</span>
+                    <span>RETENTION FOCUS</span>
+                  </div>
+
+                  <div style="my: auto">
+                    <p
+                      id="inspector-headline"
+                      style="
+                        font-family: var(--font-display);
+                        font-size: clamp(2rem, 3.5vw, 2.9rem);
+                        line-height: 0.95;
+                        text-transform: uppercase;
+                      "
+                    >
+                      0.8 SECONDS TO BREAK PATTERNS IN THE FEED.
+                    </p>
+                    <p
+                      id="inspector-subcopy"
+                      style="
+                        margin-top: 0.85rem;
+                        font-size: 0.92rem;
+                        color: var(--light-gray);
+                        line-height: 1.5;
+                      "
+                    >
+                      Stark contrast, kinetic typography, and immediate visual
+                      intrigue stop passive scrolling before the viewer moves
+                      on.
+                    </p>
+                  </div>
+
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      border-top: 1px solid var(--border-dark);
+                      padding-top: 0.75rem;
+                      font-family: var(--font-grotesk);
+                      font-size: 0.7rem;
+                      color: var(--light-gray);
+                    "
+                  >
+                    <span id="inspector-format"
+                      >FORMAT: SHORT-FORM REEL &amp; STORY</span
+                    >
+                    <span>1080 × 1920 PX</span>
+                  </div>
+                </div>
+
+                <div
+                  class="frame-tabs"
+                  role="tablist"
+                  aria-label="Inspect Frame Stages"
+                >
+                  <button
+                    type="button"
+                    class="frame-tab-btn is-active"
+                    data-stage="hook"
+                    role="tab"
+                    aria-selected="true"
+                  >
+                    01. STOP
+                  </button>
+                  <button
+                    type="button"
+                    class="frame-tab-btn"
+                    data-stage="look"
+                    role="tab"
+                    aria-selected="false"
+                  >
+                    02. LOOK
+                  </button>
+                  <button
+                    type="button"
+                    class="frame-tab-btn"
+                    data-stage="remember"
+                    role="tab"
+                    aria-selected="false"
+                  >
+                    03. REMEMBER
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+         09. SECTION 2: WHAT WE DELIVER (COMPANY INTRODUCTION & NARRATIVE)
+         ====================================================================== -->
+      <section class="section-shell theme-dark" id="what-we-deliver">
+        <div class="container-inner">
+          <div class="structural-header">
+            <span class="meta-tag">SECTION 02 // WHAT WE DELIVER</span>
+            <span
+              style="
+                font-family: var(--font-grotesk);
+                font-size: 0.75rem;
+                color: var(--mid-gray);
+                letter-spacing: 0.14em;
+              "
+            >
+              PURPOSE-DRIVEN DIGITAL PRESENCE
+            </span>
+          </div>
+
+          <h2 class="display-xl reveal-headline" style="max-width: 16ch">
+            <span class="line-mask"
+              ><span class="line-inner">MORE THAN CONTENT.</span></span
+            >
+            <span class="line-mask"
+              ><span class="line-inner"
+                >A REASON TO <span class="display-outline">CARE.</span></span
+              ></span
+            >
+          </h2>
+
+          <div class="deliver-chapter-list">
+            <!-- Chapter 01 -->
+            <article class="deliver-chapter reveal-fade">
+              <div class="deliver-index">01 // ELEVATION</div>
+              <h3 class="deliver-statement">BEYOND KEEPING A PAGE ACTIVE.</h3>
+              <p class="deliver-body">
+                Our work goes beyond simply keeping a social media page active.
+                We strengthen our clients' digital presence, elevate their
+                marketing, and turn attention into potential customers.
+              </p>
+            </article>
+
+            <!-- Chapter 02 -->
+            <article class="deliver-chapter reveal-fade">
+              <div class="deliver-index">02 // CONSISTENCY</div>
+              <h3 class="deliver-statement">
+                RELENTLESS MULTI-FORMAT PRODUCTION.
+              </h3>
+              <p class="deliver-body">
+                For our clients, we develop and consistently produce reels,
+                promotional videos, posters, stories, product-focused creatives,
+                and campaign content, ensuring their brands remain visible,
+                relevant, and engaging across social platforms.
+              </p>
+            </article>
+
+            <!-- Chapter 03 -->
+            <article class="deliver-chapter reveal-fade">
+              <div class="deliver-index">03 // NATIVE CRAFT</div>
+              <h3 class="deliver-statement">
+                UNCONVENTIONAL &amp; PLATFORM-NATIVE.
+              </h3>
+              <p class="deliver-body">
+                Rather than relying on conventional advertising, we approach
+                marketing through creative, unconventional, and platform-native
+                content, particularly short-form video designed to capture
+                attention and encourage audiences to discover the brand.
+              </p>
+            </article>
+
+            <!-- Chapter 04 -->
+            <article class="deliver-chapter reveal-fade">
+              <div class="deliver-index">04 // COMMERCIAL INTENT</div>
+              <h3 class="deliver-statement">
+                EVERY ASSET HAS A CLEAR OBJECTIVE.
+              </h3>
+              <p class="deliver-body">
+                From showcasing products and services to highlighting events,
+                promotions, and offers, every piece of content is created with a
+                purpose: increase visibility, attract new audiences, generate
+                customer interest, and ultimately contribute to business growth.
+              </p>
+            </article>
+          </div>
+
+          <div class="deliver-climax-box reveal-fade">
+            <span class="meta-tag" style="margin-bottom: 1.25rem"
+              >THE CENTRAL PHILOSOPHY</span
+            >
+            <p class="display-lg" style="line-height: 0.96">
+              WE DON'T JUST POST CONTENT.<br />
+              WE CREATE REASONS FOR PEOPLE TO NOTICE, ENGAGE, AND BECOME
+              CUSTOMERS.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+         10. SECTION 3: OUR CREATIVE CAPABILITIES
+         ====================================================================== -->
+      <section class="section-shell theme-light" id="capabilities">
+        <div class="container-inner">
+          <div class="structural-header">
+            <span class="meta-tag" style="color: var(--pure-black)"
+              >SECTION 03 // OUR CREATIVE CAPABILITIES</span
+            >
+            <span
+              style="
+                font-family: var(--font-grotesk);
+                font-size: 0.75rem;
+                font-weight: 700;
+                letter-spacing: 0.14em;
+              "
+            >
+              06 INTEGRATED PRODUCTION PILLARS
+            </span>
+          </div>
+
+          <h2
+            class="display-xl reveal-headline"
+            style="margin-bottom: clamp(2.5rem, 5vw, 4.5rem)"
+          >
+            <span class="line-mask"
+              ><span class="line-inner">WE TURN IDEAS INTO</span></span
+            >
+            <span class="line-mask"
+              ><span class="line-inner">THINGS PEOPLE NOTICE.</span></span
+            >
+          </h2>
+
+          <div class="capabilities-layout">
+            <div
+              class="capabilities-list"
+              role="region"
+              aria-label="Creative Capabilities List"
+            >
+              <!-- 01 -->
+              <article
+                class="capability-row is-active"
+                tabindex="0"
+                data-cap="0"
+              >
+                <div class="capability-row-head">
+                  <span class="capability-num">01</span>
+                  <h3 class="capability-title">REELS AND SHORT-FORM VIDEO.</h3>
+                  <span class="capability-ratio-tag">9:16 VERTICAL</span>
+                </div>
+                <p class="capability-desc">
+                  High-retention vertical video crafted natively for discovery
+                  feeds. Paced with deliberate visual hooks, rhythmic editing,
+                  and clear brand storytelling that makes viewers stop scrolling
+                  and watch to the final frame.
+                </p>
+              </article>
+
+              <!-- 02 -->
+              <article class="capability-row" tabindex="0" data-cap="1">
+                <div class="capability-row-head">
+                  <span class="capability-num">02</span>
+                  <h3 class="capability-title">PROMOTIONAL FILMS.</h3>
+                  <span class="capability-ratio-tag">16:9 / 4:5 CINEMA</span>
+                </div>
+                <p class="capability-desc">
+                  Cinematic brand and offer films that articulate your
+                  positioning, elevate perceived value, and turn launches,
+                  services, and flagship announcements into memorable visual
+                  statements.
+                </p>
+              </article>
+
+              <!-- 03 -->
+              <article class="capability-row" tabindex="0" data-cap="2">
+                <div class="capability-row-head">
+                  <span class="capability-num">03</span>
+                  <h3 class="capability-title">POSTERS AND STORIES.</h3>
+                  <span class="capability-ratio-tag"
+                    >4:5 &amp; 9:16 SEQUENCE</span
+                  >
+                </div>
+                <p class="capability-desc">
+                  Swiss-precision static and motion posters paired with
+                  sequential multi-frame stories that sustain daily touchpoints,
+                  announce timely offers, and prompt direct audience
+                  interaction.
+                </p>
+              </article>
+
+              <!-- 04 -->
+              <article class="capability-row" tabindex="0" data-cap="3">
+                <div class="capability-row-head">
+                  <span class="capability-num">04</span>
+                  <h3 class="capability-title">PRODUCT CREATIVES.</h3>
+                  <span class="capability-ratio-tag">1:1 / 4:5 STUDIO</span>
+                </div>
+                <p class="capability-desc">
+                  Tactile, art-directed product compositions that spotlight
+                  form, texture, craftsmanship, and utility—giving customers an
+                  immediate visual reason to desire what you sell.
+                </p>
+              </article>
+
+              <!-- 05 -->
+              <article class="capability-row" tabindex="0" data-cap="4">
+                <div class="capability-row-head">
+                  <span class="capability-num">05</span>
+                  <h3 class="capability-title">CAMPAIGN CONTENT.</h3>
+                  <span class="capability-ratio-tag">OMNI-FORMAT</span>
+                </div>
+                <p class="capability-desc">
+                  Cohesive creative systems constructed around seasonal
+                  launches, events, and promotional windows—uniting video,
+                  posters, and stories under one unmistakable concept.
+                </p>
+              </article>
+
+              <!-- 06 -->
+              <article class="capability-row" tabindex="0" data-cap="5">
+                <div class="capability-row-head">
+                  <span class="capability-num">06</span>
+                  <h3 class="capability-title">
+                    SOCIAL MEDIA CREATIVE PRODUCTION.
+                  </h3>
+                  <span class="capability-ratio-tag">ALWAYS-ON ENGINE</span>
+                </div>
+                <p class="capability-desc">
+                  Consistent, end-to-end creative direction and production that
+                  keeps your brand visually sharp, culturally relevant, and
+                  commercially persuasive week after week.
+                </p>
+              </article>
+            </div>
+
+            <!-- Interactive Live Procedural Spec Monitor -->
+            <aside
+              class="capabilities-preview-panel"
+              aria-label="Capability Live Blueprint"
+            >
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 1rem;
+                  font-family: var(--font-grotesk);
+                  font-size: 0.74rem;
+                  letter-spacing: 0.12em;
+                "
+              >
+                <span id="cap-monitor-index">SPECIFICATION // 01</span>
+                <span id="cap-monitor-ratio">ASPECT: 9:16</span>
+              </div>
+
+              <div class="capability-canvas-wrap">
+                <canvas id="capability-preview-canvas"></canvas>
+              </div>
+
+              <div style="margin-top: 1.25rem">
+                <h4
+                  id="cap-monitor-title"
+                  style="
+                    font-family: var(--font-display);
+                    font-size: 1.75rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.01em;
+                  "
+                >
+                  REELS &amp; SHORT-FORM VIDEO
+                </h4>
+                <p
+                  id="cap-monitor-purpose"
+                  style="
+                    margin-top: 0.5rem;
+                    font-size: 0.9rem;
+                    color: var(--light-gray);
+                    line-height: 1.5;
+                  "
+                >
+                  PRIMARY PURPOSE: Capture cold audience discovery and engineer
+                  repeat brand recall through kinetic visual storytelling.
+                </p>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+         11. SECTION 4: THE CREATIVE PLAYGROUND (3D SPATIAL GALLERY)
+         ====================================================================== -->
+      <section
+        class="section-shell playground-section"
+        id="creative-playground"
+      >
+        <div
+          class="container-inner"
+          style="
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100vh;
+          "
+        >
+          <div>
+            <div class="structural-header">
+              <span class="meta-tag"
+                >SECTION 04 // THE CREATIVE PLAYGROUND</span
+              >
+              <span
+                style="
+                  font-family: var(--font-grotesk);
+                  font-size: 0.75rem;
+                  color: var(--light-gray);
+                  letter-spacing: 0.14em;
+                "
+              >
+                THREE.JS SPATIAL CONTENT ARCHITECTURE
+              </span>
+            </div>
+
+            <div class="playground-hud">
+              <span class="meta-tag" style="margin-bottom: 0.75rem"
+                >FROM ISOLATED ASSETS TO UNIFIED CAMPAIGNS</span
+              >
+              <h2 class="display-lg" style="margin-bottom: 1rem">
+                INDIVIDUAL PIECES.<br />ONE COHERENT STRATEGY.
+              </h2>
+              <p
+                style="
+                  font-size: 0.98rem;
+                  color: var(--light-gray);
+                  line-height: 1.6;
+                "
+              >
+                A single reel or poster can spark interest, but coordinated
+                creative architecture builds lasting momentum. Scroll or toggle
+                the spatial states below to observe how our 3D monochromatic
+                paper sheets and media frames assemble from scattered artifacts
+                into a unified campaign matrix.
+              </p>
+
+              <div
+                class="playground-controls"
+                role="group"
+                aria-label="3D Spatial Formation Controls"
+              >
+                <button
+                  type="button"
+                  class="playground-mode-btn is-active"
+                  data-formation="campaign"
+                >
+                  01. UNIFIED CAMPAIGN GRID
+                </button>
+                <button
+                  type="button"
+                  class="playground-mode-btn"
+                  data-formation="reel"
+                >
+                  02. 9:16 REEL STACK
+                </button>
+                <button
+                  type="button"
+                  class="playground-mode-btn"
+                  data-formation="orbital"
+                >
+                  03. SPATIAL ORBIT
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="playground-nodes-grid">
+            <div class="playground-node-card">
+              <span class="meta-tag">FRAME A // 9:16</span>
+              <h3
+                style="
+                  font-family: var(--font-display);
+                  font-size: 1.45rem;
+                  margin: 0.6rem 0 0.4rem;
+                "
+              >
+                DISCOVERY REEL
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--light-gray)">
+                Interrupts passive scrolling and introduces the core brand hook
+                to new audiences.
+              </p>
+            </div>
+            <div class="playground-node-card">
+              <span class="meta-tag">FRAME B // 16:9</span>
+              <h3
+                style="
+                  font-family: var(--font-display);
+                  font-size: 1.45rem;
+                  margin: 0.6rem 0 0.4rem;
+                "
+              >
+                PROMO FILM
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--light-gray)">
+                Deepens narrative authority and showcases product or service
+                value in high contrast.
+              </p>
+            </div>
+            <div class="playground-node-card">
+              <span class="meta-tag">FRAME C // 4:5</span>
+              <h3
+                style="
+                  font-family: var(--font-display);
+                  font-size: 1.45rem;
+                  margin: 0.6rem 0 0.4rem;
+                "
+              >
+                FEED POSTER
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--light-gray)">
+                Anchors the grid with bold typographic clarity and key
+                promotional messaging.
+              </p>
+            </div>
+            <div class="playground-node-card">
+              <span class="meta-tag">FRAME D // 1:1</span>
+              <h3
+                style="
+                  font-family: var(--font-display);
+                  font-size: 1.45rem;
+                  margin: 0.6rem 0 0.4rem;
+                "
+              >
+                PRODUCT STUDY
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--light-gray)">
+                Highlights tactile detail, features, and visual proof to build
+                buyer confidence.
+              </p>
+            </div>
+            <div class="playground-node-card">
+              <span class="meta-tag">FRAME E // 9:16</span>
+              <h3
+                style="
+                  font-family: var(--font-display);
+                  font-size: 1.45rem;
+                  margin: 0.6rem 0 0.4rem;
+                "
+              >
+                STORY FUNNEL
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--light-gray)">
+                Drives direct inquiries, messages, and store visits with clear
+                action prompts.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+         12. SECTION 5: THE WORK (ILLUSTRATIVE CONCEPTUAL COMPOSITIONS)
+         ====================================================================== -->
+      <section class="section-shell theme-dark" id="the-work">
+        <div class="container-inner">
+          <div class="structural-header">
+            <span class="meta-tag">SECTION 05 // THE WORK</span>
+            <span
+              style="
+                font-family: var(--font-grotesk);
+                font-size: 0.75rem;
+                color: var(--mid-gray);
+                letter-spacing: 0.14em;
+              "
+            >
+              SELECTED CONCEPTUAL PRODUCTION STUDIES
+            </span>
+          </div>
+
+          <h2
+            class="display-xl reveal-headline"
+            style="margin-bottom: clamp(1.75rem, 3.5vw, 3rem)"
+          >
+            <span class="line-mask"
+              ><span class="line-inner">CREATIVITY WITH</span></span
+            >
+            <span class="line-mask"
+              ><span class="line-inner"
+                >A <span class="display-outline">PURPOSE.</span></span
+              ></span
+            >
+          </h2>
+
+          <div class="work-disclaimer-banner">
+            <span
+              >TRANSPARENCY NOTE // ILLUSTRATIVE CONCEPTUAL COMPOSITIONS
+              DEMONSTRATING STUDIO ART DIRECTION &amp; FORMAT EXECUTION</span
+            >
+            <span>[04 INTERACTIVE STUDIES]</span>
+          </div>
+
+          <div class="work-showcase-grid">
+            <!-- Study 01 -->
+            <article class="work-panel work-panel-span-7 reveal-fade">
+              <div class="work-media-frame">
+                <canvas class="work-canvas" data-study="0"></canvas>
+                <span class="work-badge-overlay"
+                  >CONCEPTUAL STUDY 01 // 9:16 REEL SERIES</span
+                >
+              </div>
+              <div class="work-panel-body">
+                <div class="work-format-meta">
+                  FORMAT: SHORT-FORM VIDEO &amp; RHYTHMIC TYPOGRAPHY
+                </div>
+                <h3 class="work-title">
+                  MONOLITH — HIGH-CONTRAST PRODUCT LAUNCH REEL
+                </h3>
+                <p class="work-summary">
+                  An illustrative short-form video study demonstrating rapid
+                  visual hook pacing, stark light-sweep reveals, and
+                  frame-synchronized typography designed to hold viewer
+                  attention from the first second.
+                </p>
+                <button
+                  type="button"
+                  class="btn btn-secondary open-study-btn"
+                  data-study-index="0"
+                  data-cursor="INSPECT"
+                >
+                  INSPECT PRODUCTION ARCHITECTURE
+                  <span class="btn-arrow">↗</span>
+                </button>
+              </div>
+            </article>
+
+            <!-- Study 02 -->
+            <article class="work-panel work-panel-span-5 reveal-fade">
+              <div class="work-media-frame">
+                <canvas class="work-canvas" data-study="1"></canvas>
+                <span class="work-badge-overlay"
+                  >CONCEPTUAL STUDY 02 // POSTER &amp; OFFER SYSTEM</span
+                >
+              </div>
+              <div class="work-panel-body">
+                <div class="work-format-meta">
+                  FORMAT: SWISS EDITORIAL POSTERS &amp; SOCIAL CAROUSEL
+                </div>
+                <h3 class="work-title">
+                  KINETIC GRID — PROMOTIONAL CAMPAIGN POSTERS
+                </h3>
+                <p class="work-summary">
+                  An illustrative poster and offer creative system showing how
+                  oversized grotesk typography and strict grid hierarchy turn
+                  promotional announcements into thumb-stopping visual
+                  statements.
+                </p>
+                <button
+                  type="button"
+                  class="btn btn-secondary open-study-btn"
+                  data-study-index="1"
+                  data-cursor="INSPECT"
+                >
+                  INSPECT PRODUCTION ARCHITECTURE
+                  <span class="btn-arrow">↗</span>
+                </button>
+              </div>
+            </article>
+
+            <!-- Study 03 -->
+            <article class="work-panel work-panel-span-5-left reveal-fade">
+              <div class="work-media-frame">
+                <canvas class="work-canvas" data-study="2"></canvas>
+                <span class="work-badge-overlay"
+                  >CONCEPTUAL STUDY 03 // PRODUCT CREATIVE</span
+                >
+              </div>
+              <div class="work-panel-body">
+                <div class="work-format-meta">
+                  FORMAT: PRODUCT-FOCUSED CREATIVE PRODUCTION
+                </div>
+                <h3 class="work-title">
+                  CHIAROSCURO — TACTILE OBJECT &amp; STUDIO LIGHTING
+                </h3>
+                <p class="work-summary">
+                  An illustrative product-focused creative composition
+                  emphasizing silhouette, surface texture, and dramatic studio
+                  contrast so the product itself becomes the hero of the social
+                  feed.
+                </p>
+                <button
+                  type="button"
+                  class="btn btn-secondary open-study-btn"
+                  data-study-index="2"
+                  data-cursor="INSPECT"
+                >
+                  INSPECT PRODUCTION ARCHITECTURE
+                  <span class="btn-arrow">↗</span>
+                </button>
+              </div>
+            </article>
+
+            <!-- Study 04 -->
+            <article class="work-panel work-panel-span-7-right reveal-fade">
+              <div class="work-media-frame">
+                <canvas class="work-canvas" data-study="3"></canvas>
+                <span class="work-badge-overlay"
+                  >CONCEPTUAL STUDY 04 // CAMPAIGN &amp; STORY SEQUENCE</span
+                >
+              </div>
+              <div class="work-panel-body">
+                <div class="work-format-meta">
+                  FORMAT: PROMOTIONAL FILM + 5-FRAME STORY FUNNEL
+                </div>
+                <h3 class="work-title">
+                  MOMENTUM — MULTI-TOUCHPOINT CAMPAIGN ARCHITECTURE
+                </h3>
+                <p class="work-summary">
+                  An illustrative campaign blueprint pairing a flagship
+                  promotional video with sequential interactive stories
+                  engineered to move audiences from initial curiosity to direct
+                  brand inquiry.
+                </p>
+                <button
+                  type="button"
+                  class="btn btn-secondary open-study-btn"
+                  data-study-index="3"
+                  data-cursor="INSPECT"
+                >
+                  INSPECT PRODUCTION ARCHITECTURE
+                  <span class="btn-arrow">↗</span>
+                </button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+         13. SECTION 6: FROM VISIBILITY TO BUSINESS VALUE
+         ====================================================================== -->
+      <section class="section-shell theme-light" id="business-value">
+        <div class="container-inner">
+          <div class="structural-header">
+            <span class="meta-tag" style="color: var(--pure-black)"
+              >SECTION 06 // FROM VISIBILITY TO BUSINESS VALUE</span
+            >
+            <span
+              style="
+                font-family: var(--font-grotesk);
+                font-size: 0.75rem;
+                font-weight: 700;
+                letter-spacing: 0.14em;
+              "
+            >
+              COMMERCIAL PROGRESSION SYSTEM
+            </span>
+          </div>
+
+          <h2 class="display-xl reveal-headline">
+            <span class="line-mask"
+              ><span class="line-inner">GET NOTICED.</span></span
+            >
+            <span class="line-mask"
+              ><span class="line-inner">BUILD INTEREST. GROW.</span></span
+            >
+          </h2>
+
+          <p
+            style="
+              margin-top: 1.5rem;
+              font-size: clamp(1.05rem, 1.4vw, 1.3rem);
+              max-width: 60ch;
+              color: var(--dark-charcoal);
+              line-height: 1.6;
+            "
+            class="reveal-fade"
+          >
+            Creative quality is not separate from commercial performance—it is
+            the catalyst for it. Here is how our production system supports your
+            marketing goals at every stage of audience connection:
+          </p>
+
+          <div class="value-progression-grid">
+            <!-- Stage 01 -->
+            <div class="value-stage-card reveal-fade">
+              <div>
+                <span class="value-stage-num">STAGE 01 // VISIBILITY</span>
+                <h3 class="value-stage-title">GET NOTICED.</h3>
+                <p class="value-stage-copy">
+                  Break through feed fatigue with platform-native reels,
+                  distinctive visual hooks, and unmistakable art direction that
+                  introduce your brand to new audiences.
+                </p>
+              </div>
+              <div
+                style="
+                  margin-top: 2rem;
+                  font-family: var(--font-grotesk);
+                  font-size: 0.72rem;
+                  font-weight: 700;
+                  letter-spacing: 0.12em;
+                  text-transform: uppercase;
+                  border-top: 1px solid currentColor;
+                  padding-top: 0.85rem;
+                "
+              >
+                OUTPUT: REELS &amp; DISCOVERY CREATIVES
+              </div>
+            </div>
+
+            <!-- Stage 02 -->
+            <div class="value-stage-card reveal-fade">
+              <div>
+                <span class="value-stage-num">STAGE 02 // VALUE</span>
+                <h3 class="value-stage-title">BUILD INTEREST.</h3>
+                <p class="value-stage-copy">
+                  Communicate what sets your products, services, and offers
+                  apart through high-craft promotional films and tactile product
+                  creatives that reward closer inspection.
+                </p>
+              </div>
+              <div
+                style="
+                  margin-top: 2rem;
+                  font-family: var(--font-grotesk);
+                  font-size: 0.72rem;
+                  font-weight: 700;
+                  letter-spacing: 0.12em;
+                  text-transform: uppercase;
+                  border-top: 1px solid currentColor;
+                  padding-top: 0.85rem;
+                "
+              >
+                OUTPUT: PROMO FILMS &amp; PRODUCT STUDIES
+              </div>
+            </div>
+
+            <!-- Stage 03 -->
+            <div class="value-stage-card reveal-fade">
+              <div>
+                <span class="value-stage-num">STAGE 03 // ENGAGEMENT</span>
+                <h3 class="value-stage-title">START CONVERSATIONS.</h3>
+                <p class="value-stage-copy">
+                  Stay top-of-mind with consistent stories, event highlights,
+                  and campaign posters that invite replies, shares, inquiries,
+                  and active community dialogue.
+                </p>
+              </div>
+              <div
+                style="
+                  margin-top: 2rem;
+                  font-family: var(--font-grotesk);
+                  font-size: 0.72rem;
+                  font-weight: 700;
+                  letter-spacing: 0.12em;
+                  text-transform: uppercase;
+                  border-top: 1px solid currentColor;
+                  padding-top: 0.85rem;
+                "
+              >
+                OUTPUT: STORIES, POSTERS &amp; OFFERS
+              </div>
+            </div>
+
+            <!-- Stage 04 -->
+            <div class="value-stage-card reveal-fade">
+              <div>
+                <span class="value-stage-num">STAGE 04 // MOMENTUM</span>
+                <h3 class="value-stage-title">GROW YOUR BRAND.</h3>
+                <p class="value-stage-copy">
+                  Turn sustained visibility and audience trust into real
+                  customer interest, store visits, and long-term brand equity
+                  across every digital touchpoint.
+                </p>
+              </div>
+              <div
+                style="
+                  margin-top: 2rem;
+                  font-family: var(--font-grotesk);
+                  font-size: 0.72rem;
+                  font-weight: 700;
+                  letter-spacing: 0.12em;
+                  text-transform: uppercase;
+                  border-top: 1px solid currentColor;
+                  padding-top: 0.85rem;
+                "
+              >
+                OUTPUT: FULL-FUNNEL CAMPAIGN CONTENT
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+         14. SECTION 7: THE FINAL CONVERSION
+         ====================================================================== -->
+      <section class="section-shell theme-dark" id="contact">
+        <div class="container-inner">
+          <div class="structural-header">
+            <span class="meta-tag">SECTION 07 // INITIATE COLLABORATION</span>
+            <span
+              style="
+                font-family: var(--font-grotesk);
+                font-size: 0.75rem;
+                color: var(--mid-gray);
+                letter-spacing: 0.14em;
+              "
+            >
+              KOLHAPUR, MAHARASHTRA, INDIA // GLOBAL DISPATCH
+            </span>
+          </div>
+
+          <div class="conversion-grid">
+            <div class="conversion-left">
+              <h2
+                class="display-monumental reveal-headline"
+                style="font-size: clamp(2.8rem, 8.8vw, 8.8rem)"
+              >
+                <span class="line-mask"
+                  ><span class="line-inner">YOUR BRAND</span></span
+                >
+                <span class="line-mask"
+                  ><span class="line-inner">DESERVES TO</span></span
+                >
+                <span class="line-mask"
+                  ><span class="line-inner"
+                    >BE <span class="display-outline">NOTICED.</span></span
+                  ></span
+                >
+              </h2>
+
+              <p
+                style="
+                  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+                  font-size: clamp(1.15rem, 1.8vw, 1.65rem);
+                  color: var(--light-gray);
+                  max-width: 44ch;
+                  line-height: 1.45;
+                "
+                class="reveal-fade"
+              >
+                Let's create content that captures attention, builds interest,
+                and gives people a reason to choose your brand.
+              </p>
+
+              <div
+                style="
+                  margin-top: 2.25rem;
+                  display: flex;
+                  flex-wrap: wrap;
+                  gap: 1rem;
+                "
+                class="reveal-fade"
+              >
+                <a
+                  href="mailto:mahajansrujan999@gamil.com?subject=Creative%20Project%20Inquiry%20%E2%80%94%20Post-it"
+                  class="btn btn-primary"
+                  id="primary-mailto-cta"
+                  data-cursor="EMAIL"
+                >
+                  LET'S CREATE SOMETHING GREAT. <span class="btn-arrow">↗</span>
+                </a>
+                <a
+                  href="tel:+917385329009"
+                  class="btn btn-secondary"
+                  data-cursor="CALL"
+                >
+                  DISCUSS YOUR PROJECT. <span class="btn-arrow">↗</span>
+                </a>
+              </div>
+
+              <div
+                style="
+                  margin-top: 3rem;
+                  padding-top: 2rem;
+                  border-top: 1px solid var(--border-dark);
+                  display: grid;
+                  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                  gap: 1.5rem;
+                "
+              >
+                <div>
+                  <span class="meta-tag">DIRECT EMAIL</span>
+                  <p
+                    style="
+                      margin-top: 0.5rem;
+                      font-family: var(--font-grotesk);
+                      font-size: 1rem;
+                    "
+                  >
+                    <a
+                      href="mailto:mahajansrujan999@gamil.com"
+                      style="
+                        color: var(--pure-white);
+                        text-decoration: none;
+                        border-bottom: 1px solid var(--pure-white);
+                      "
+                    >
+                      mahajansrujan999@gamil.com
+                    </a>
+                  </p>
+                </div>
+                <div>
+                  <span class="meta-tag">DIRECT PHONE</span>
+                  <p
+                    style="
+                      margin-top: 0.5rem;
+                      font-family: var(--font-grotesk);
+                      font-size: 1rem;
+                    "
+                  >
+                    <a
+                      href="tel:+917385329009"
+                      style="
+                        color: var(--pure-white);
+                        text-decoration: none;
+                        border-bottom: 1px solid var(--pure-white);
+                      "
+                    >
+                      +91 7385329009
+                    </a>
+                  </p>
+                </div>
+                <div>
+                  <span class="meta-tag">STUDIO BASE</span>
+                  <p
+                    style="
+                      margin-top: 0.5rem;
+                      font-family: var(--font-grotesk);
+                      font-size: 1rem;
+                      color: var(--light-gray);
+                    "
+                  >
+                    Kolhapur, Maharashtra, India
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interactive Project Brief Builder -->
+            <div class="conversion-right reveal-fade">
+              <span class="meta-tag">INTERACTIVE PROJECT BRIEF DISPATCH</span>
+              <h3
+                style="
+                  font-family: var(--font-display);
+                  font-size: 2rem;
+                  margin-top: 0.6rem;
+                  text-transform: uppercase;
+                "
+              >
+                CONFIGURE YOUR DELIVERABLES
+              </h3>
+              <p
+                style="
+                  font-size: 0.9rem;
+                  color: var(--light-gray);
+                  margin-top: 0.4rem;
+                "
+              >
+                Select the creative formats your brand needs right now to
+                generate a pre-structured project brief:
+              </p>
+
+              <div
+                class="brief-chip-grid"
+                role="group"
+                aria-label="Select Creative Formats"
+              >
+                <button
+                  type="button"
+                  class="brief-chip is-selected"
+                  data-deliverable="Reels & Short-Form Video"
+                >
+                  Reels &amp; Short-Form Video
+                </button>
+                <button
+                  type="button"
+                  class="brief-chip is-selected"
+                  data-deliverable="Promotional Films"
+                >
+                  Promotional Films
+                </button>
+                <button
+                  type="button"
+                  class="brief-chip"
+                  data-deliverable="Posters & Stories"
+                >
+                  Posters &amp; Stories
+                </button>
+                <button
+                  type="button"
+                  class="brief-chip"
+                  data-deliverable="Product Creatives"
+                >
+                  Product Creatives
+                </button>
+                <button
+                  type="button"
+                  class="brief-chip"
+                  data-deliverable="Campaign Content"
+                >
+                  Campaign Content
+                </button>
+                <button
+                  type="button"
+                  class="brief-chip"
+                  data-deliverable="Social Media Creative Production"
+                >
+                  Full Social Production
+                </button>
+              </div>
+
+              <form id="brief-form" novalidate>
+                <label
+                  for="brand-name-input"
+                  style="
+                    display: block;
+                    font-family: var(--font-grotesk);
+                    font-size: 0.72rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.1em;
+                    color: var(--mid-gray);
+                    margin-bottom: 0.35rem;
+                  "
+                >
+                  YOUR BRAND OR BUSINESS NAME
+                </label>
+                <input
+                  type="text"
+                  id="brand-name-input"
+                  class="brief-input"
+                  placeholder="e.g., Atelier Noir / Apex Fitness"
+                />
+
+                <label
+                  for="project-goal-input"
+                  style="
+                    display: block;
+                    font-family: var(--font-grotesk);
+                    font-size: 0.72rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.1em;
+                    color: var(--mid-gray);
+                    margin-bottom: 0.35rem;
+                  "
+                >
+                  PRIMARY MARKETING GOAL OR UPCOMING LAUNCH
+                </label>
+                <textarea
+                  id="project-goal-input"
+                  class="brief-input"
+                  rows="3"
+                  placeholder="Tell us about your products, upcoming promotions, or digital presence goals..."
+                ></textarea>
+
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  style="width: 100%; margin-top: 0.5rem"
+                >
+                  DISPATCH PROJECT BRIEF VIA EMAIL
+                  <span class="btn-arrow">↗</span>
+                </button>
+                <p
+                  id="brief-status-msg"
+                  style="
+                    margin-top: 0.75rem;
+                    font-family: var(--font-grotesk);
+                    font-size: 0.75rem;
+                    color: var(--light-gray);
+                    min-height: 1.2em;
+                  "
+                  aria-live="polite"
+                ></p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ========================================================================
+       15. SECTION 8: THE FOOTER (USES ACTUAL ./1.JPEG LOGO ASSET)
+       ======================================================================== -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-top-grid">
+          <div class="footer-brand-col">
+            <a href="#hero" class="brand-logo-wrap" aria-label="Post-it Home">
+              <img
+                src="./1.JPEG"
+                alt="Post-it company logo"
+                class="brand-logo"
+                onload="
+                  this.nextElementSibling.style.display = 'none';
+                  this.style.display = 'block';
+                "
+                onerror="
+                  this.style.display = 'none';
+                  this.nextElementSibling.style.display = 'inline-block';
+                "
+              />
+              <span class="logo-fallback-badge" aria-hidden="true"
+                >POST-IT</span
+              >
+            </a>
+            <p
+              style="
+                margin-top: 1.25rem;
+                font-size: 0.98rem;
+                color: var(--light-gray);
+                max-width: 42ch;
+                line-height: 1.6;
+              "
+            >
+              We don't just post content. We create reasons for people to
+              notice, engage, and become customers.
+            </p>
+          </div>
+
+          <div class="footer-nav-col">
+            <span class="meta-tag">NAVIGATION</span>
+            <ul class="footer-list">
+              <li>
+                <a href="#attention-economy">01 / The Attention Economy</a>
+              </li>
+              <li><a href="#what-we-deliver">02 / What We Deliver</a></li>
+              <li><a href="#capabilities">03 / Creative Capabilities</a></li>
+              <li>
+                <a href="#creative-playground">04 / The Creative Playground</a>
+              </li>
+              <li><a href="#the-work">05 / The Work</a></li>
+              <li><a href="#business-value">06 / Business Value</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-contact-col">
+            <span class="meta-tag">DIRECT CONTACT</span>
+            <ul class="footer-list">
+              <li>
+                <a href="mailto:mahajansrujan999@gamil.com"
+                  >mahajansrujan999@gamil.com</a
+                >
+              </li>
+              <li><a href="tel:+917385329009">+91 7385329009</a></li>
+              <li style="color: var(--mid-gray)">
+                Kolhapur, Maharashtra, India
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom-bar">
+          <span
+            >&copy; <span id="footer-year">2026</span> POST-IT CREATIVE
+            MARKETING. ALL RIGHTS RESERVED.</span
+          >
+          <a
+            href="#hero"
+            style="
+              color: var(--pure-white);
+              text-decoration: none;
+              font-weight: 700;
+            "
+          >
+            BACK TO TOP ↑
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Conceptual Production Study Modal -->
+    <div
+      class="concept-modal-backdrop"
+      id="concept-modal"
+      aria-hidden="true"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-study-title"
+    >
+      <div class="concept-modal-dialog">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-dark);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+          "
+        >
+          <span class="meta-tag" id="modal-study-tag"
+            >CONCEPTUAL ARCHITECTURE</span
+          >
+          <button
+            type="button"
+            id="close-modal-btn"
+            class="btn btn-secondary"
+            style="
+              padding: 0.45rem 0.9rem;
+              min-height: 36px;
+              font-size: 0.72rem;
+            "
+          >
+            CLOSE [ESC]
+          </button>
+        </div>
+
+        <h3
+          class="display-lg"
+          id="modal-study-title"
+          style="margin-bottom: 1rem"
+        >
+          STUDY TITLE
+        </h3>
+        <p
+          id="modal-study-desc"
+          style="
+            font-size: 1.05rem;
+            color: var(--light-gray);
+            line-height: 1.65;
+            margin-bottom: 1.5rem;
+          "
+        ></p>
+
+        <div
+          style="
+            border-top: 1px solid var(--border-dark);
+            padding-top: 1.25rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+          "
+        >
+          <div>
+            <span class="meta-tag">DELIVERABLE FORMATS</span>
+            <p
+              id="modal-study-formats"
+              style="
+                margin-top: 0.4rem;
+                font-family: var(--font-grotesk);
+                font-size: 0.9rem;
+              "
+            ></p>
+          </div>
+          <div>
+            <span class="meta-tag">STRATEGIC OBJECTIVE</span>
+            <p
+              id="modal-study-objective"
+              style="
+                margin-top: 0.4rem;
+                font-family: var(--font-grotesk);
+                font-size: 0.9rem;
+              "
+            ></p>
+          </div>
+        </div>
+
+        <a
+          href="#contact"
+          class="btn btn-primary"
+          id="modal-inquire-link"
+          style="width: 100%"
+        >
+          COMMISSION THIS FORMAT FOR YOUR BRAND <span class="btn-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ========================================================================
+       16. CORE INTERACTION, THREE.JS & GSAP JAVASCRIPT ENGINE
+       ======================================================================== -->
+    <script>
+      (function () {
+        "use strict";
+
+        const prefersReducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        /* ----------------------------------------------------------------------
+         16.1 NAVIGATION & MOBILE MENU LOGIC
+         ---------------------------------------------------------------------- */
+        function initNavigation() {
+          const menuToggle = document.getElementById("menu-toggle");
+          const mobileMenu = document.getElementById("mobile-menu");
+          const mobileLinks = mobileMenu
+            ? mobileMenu.querySelectorAll("a")
+            : [];
+          const progressBar = document.getElementById("scroll-progress-bar");
+
+          function setMenuState(isOpen) {
+            if (!menuToggle || !mobileMenu) return;
+            menuToggle.setAttribute("aria-expanded", String(isOpen));
+            mobileMenu.setAttribute("aria-hidden", String(!isOpen));
+            mobileMenu.classList.toggle("is-open", isOpen);
+            document.body.style.overflow = isOpen ? "hidden" : "";
+          }
+
+          if (menuToggle) {
+            menuToggle.addEventListener("click", () => {
+              const expanded =
+                menuToggle.getAttribute("aria-expanded") === "true";
+              setMenuState(!expanded);
+            });
+          }
+
+          mobileLinks.forEach((link) => {
+            link.addEventListener("click", () => setMenuState(false));
+          });
+
+          window.addEventListener("keydown", (e) => {
+            if (
+              e.key === "Escape" &&
+              mobileMenu &&
+              mobileMenu.classList.contains("is-open")
+            ) {
+              setMenuState(false);
+            }
+          });
+
+          window.addEventListener(
+            "scroll",
+            () => {
+              if (!progressBar) return;
+              const scrollTop =
+                window.scrollY || document.documentElement.scrollTop;
+              const docHeight =
+                document.documentElement.scrollHeight - window.innerHeight;
+              const progress =
+                docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+              progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+            },
+            { passive: true },
+          );
+        }
+
+        /* ----------------------------------------------------------------------
+         16.2 CUSTOM ARCHITECTURAL CURSOR (DESKTOP ONLY)
+         ---------------------------------------------------------------------- */
+        function initCustomCursor() {
+          const cursor = document.getElementById("custom-cursor");
+          const cursorLabel = document.getElementById("cursor-label");
+          if (!cursor || prefersReducedMotion) return;
+
+          let mouseX = window.innerWidth / 2;
+          let mouseY = window.innerHeight / 2;
+          let currentX = mouseX;
+          let currentY = mouseY;
+
+          window.addEventListener(
+            "pointermove",
+            (e) => {
+              mouseX = e.clientX;
+              mouseY = e.clientY;
+            },
+            { passive: true },
+          );
+
+          function renderCursor() {
+            currentX += (mouseX - currentX) * 0.22;
+            currentY += (mouseY - currentY) * 0.22;
+            cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+            requestAnimationFrame(renderCursor);
+          }
+          requestAnimationFrame(renderCursor);
+
+          const interactiveTargets = document.querySelectorAll(
+            "[data-cursor], .capability-row, .playground-mode-btn",
+          );
+          interactiveTargets.forEach((el) => {
+            el.addEventListener("pointerenter", () => {
+              cursor.classList.add("is-active");
+              if (cursorLabel) {
+                cursorLabel.textContent =
+                  el.getAttribute("data-cursor") || "VIEW";
+              }
+            });
+            el.addEventListener("pointerleave", () => {
+              cursor.classList.remove("is-active");
+              if (cursorLabel) {
+                cursorLabel.textContent = "";
+              }
+            });
+          });
+        }
+
+        /* ----------------------------------------------------------------------
+         16.3 SECTION 1: FRAME DIAGNOSTIC INTERACTION
+         ---------------------------------------------------------------------- */
+        function initAttentionInspector() {
+          const stageData = {
+            hook: {
+              tag: "PHASE 01 // VISUAL HOOK",
+              timecode: "00:00:00:18",
+              headline: "0.8 SECONDS TO BREAK PATTERNS IN THE FEED.",
+              subcopy:
+                "Stark contrast, kinetic typography, and immediate visual intrigue stop passive scrolling before the viewer moves on.",
+              format: "FORMAT: SHORT-FORM REEL & STORY",
+            },
+            look: {
+              tag: "PHASE 02 // NARRATIVE RETENTION",
+              timecode: "00:00:04:09",
+              headline: "PACE EVERY CUT TO COMMUNICATE VALUE CLEARLY.",
+              subcopy:
+                "Once attention is captured, intentional framing and product-focused visual proof hold the eye and build curiosity.",
+              format: "FORMAT: PROMOTIONAL FILM & PRODUCT CREATIVE",
+            },
+            remember: {
+              tag: "PHASE 03 // COMMERCIAL ACTION",
+              timecode: "00:00:09:22",
+              headline: "LEAVE AN UNMISTAKABLE REASON TO ENGAGE.",
+              subcopy:
+                "Every piece resolves with a memorable brand signature and a frictionless reason to inquire, visit, or buy.",
+              format: "FORMAT: CAMPAIGN & OFFER SYSTEM",
+            },
+          };
+
+          const buttons = document.querySelectorAll(".frame-tab-btn");
+          const tagEl = document.getElementById("inspector-tag");
+          const timeEl = document.getElementById("frame-timecode");
+          const headEl = document.getElementById("inspector-headline");
+          const subEl = document.getElementById("inspector-subcopy");
+          const fmtEl = document.getElementById("inspector-format");
+
+          buttons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const key = btn.getAttribute("data-stage");
+              const info = stageData[key];
+              if (!info) return;
+
+              buttons.forEach((b) => {
+                b.classList.remove("is-active");
+                b.setAttribute("aria-selected", "false");
+              });
+              btn.classList.add("is-active");
+              btn.setAttribute("aria-selected", "true");
+
+              if (tagEl) tagEl.textContent = info.tag;
+              if (timeEl) timeEl.textContent = info.timecode;
+              if (headEl) headEl.textContent = info.headline;
+              if (subEl) subEl.textContent = info.subcopy;
+              if (fmtEl) fmtEl.textContent = info.format;
+            });
+          });
+        }
+
+        /* ----------------------------------------------------------------------
+         16.4 SECTION 3: CAPABILITIES PROCEDURAL CANVAS MONITOR
+         ---------------------------------------------------------------------- */
+        function initCapabilitiesMonitor() {
+          const capSpecs = [
+            {
+              index: "SPECIFICATION // 01",
+              ratio: "ASPECT: 9:16 VERTICAL",
+              title: "REELS & SHORT-FORM VIDEO",
+              purpose:
+                "PRIMARY PURPOSE: Capture cold audience discovery and engineer repeat brand recall through kinetic visual storytelling.",
+            },
+            {
+              index: "SPECIFICATION // 02",
+              ratio: "ASPECT: 16:9 CINEMA",
+              title: "PROMOTIONAL FILMS",
+              purpose:
+                "PRIMARY PURPOSE: Elevate brand stature and communicate product or service value with cinematic lighting and editorial pacing.",
+            },
+            {
+              index: "SPECIFICATION // 03",
+              ratio: "ASPECT: 4:5 & 9:16",
+              title: "POSTERS AND STORIES",
+              purpose:
+                "PRIMARY PURPOSE: Anchor social feeds and daily story sequences with unmistakable typographic clarity and event/offer urgency.",
+            },
+            {
+              index: "SPECIFICATION // 04",
+              ratio: "ASPECT: 1:1 STUDIO",
+              title: "PRODUCT CREATIVES",
+              purpose:
+                "PRIMARY PURPOSE: Showcase physical detail, silhouette, and desire so products stand out immediately in crowded feeds.",
+            },
+            {
+              index: "SPECIFICATION // 05",
+              ratio: "ASPECT: OMNI-CHANNEL",
+              title: "CAMPAIGN CONTENT",
+              purpose:
+                "PRIMARY PURPOSE: Synchronize video, posters, and stories into one cohesive launch or promotional narrative.",
+            },
+            {
+              index: "SPECIFICATION // 06",
+              ratio: "ASPECT: SYSTEMATIC",
+              title: "SOCIAL MEDIA CREATIVE PRODUCTION",
+              purpose:
+                "PRIMARY PURPOSE: Deliver consistent, high-contrast creative output that keeps your brand visible, relevant, and engaging.",
+            },
+          ];
+
+          let activeCapIndex = 0;
+          const rows = document.querySelectorAll(".capability-row");
+          const idxEl = document.getElementById("cap-monitor-index");
+          const ratioEl = document.getElementById("cap-monitor-ratio");
+          const titleEl = document.getElementById("cap-monitor-title");
+          const purposeEl = document.getElementById("cap-monitor-purpose");
+          const canvas = document.getElementById("capability-preview-canvas");
+
+          function selectCap(idx) {
+            activeCapIndex = idx;
+            const spec = capSpecs[idx];
+            if (!spec) return;
+            rows.forEach((r, i) => r.classList.toggle("is-active", i === idx));
+            if (idxEl) idxEl.textContent = spec.index;
+            if (ratioEl) ratioEl.textContent = spec.ratio;
+            if (titleEl) titleEl.textContent = spec.title;
+            if (purposeEl) purposeEl.textContent = spec.purpose;
+          }
+
+          rows.forEach((row, idx) => {
+            row.addEventListener("click", () => selectCap(idx));
+            row.addEventListener("mouseenter", () => selectCap(idx));
+            row.addEventListener("keydown", (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                selectCap(idx);
+              }
+            });
+          });
+
+          if (!canvas) return;
+          const ctx = canvas.getContext("2d");
+          let tick = 0;
+
+          function resizeCapCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          }
+
+          resizeCapCanvas();
+          window.addEventListener("resize", resizeCapCanvas);
+
+          function drawCapMonitor() {
+            const w = canvas.clientWidth;
+            const h = canvas.clientHeight;
+            ctx.clearRect(0, 0, w, h);
+
+            // Background Grid
+            ctx.strokeStyle = "rgba(255,255,255,0.1)";
+            ctx.lineWidth = 1;
+            const step = 32;
+            for (let x = 0; x < w; x += step) {
+              ctx.beginPath();
+              ctx.moveTo(x, 0);
+              ctx.lineTo(x, h);
+              ctx.stroke();
+            }
+            for (let y = 0; y < h; y += step) {
+              ctx.beginPath();
+              ctx.moveTo(0, y);
+              ctx.lineTo(w, y);
+              ctx.stroke();
+            }
+
+            ctx.strokeStyle = "#FFFFFF";
+            ctx.fillStyle = "#FFFFFF";
+            const cx = w / 2;
+            const cy = h / 2;
+
+            if (activeCapIndex === 0) {
+              // 9:16 Vertical Reel Frame + Kinetic Scan
+              const fw = w * 0.48;
+              const fh = fw * (16 / 9);
+              ctx.lineWidth = 2;
+              ctx.strokeRect(cx - fw / 2, cy - fh / 2, fw, fh);
+              const scanY =
+                cy - fh / 2 + (Math.sin(tick * 0.04) + 1) * 0.5 * fh;
+              ctx.beginPath();
+              ctx.moveTo(cx - fw / 2, scanY);
+              ctx.lineTo(cx + fw / 2, scanY);
+              ctx.stroke();
+              ctx.font = '700 11px "Space Grotesk", sans-serif';
+              ctx.fillText(
+                "9:16 REEL HOOK FRAME",
+                cx - fw / 2 + 10,
+                cy - fh / 2 + 22,
+              );
+            } else if (activeCapIndex === 1) {
+              // 16:9 Cinema Frame + Aperture Circles
+              const fw = w * 0.78;
+              const fh = fw * (9 / 16);
+              ctx.lineWidth = 2;
+              ctx.strokeRect(cx - fw / 2, cy - fh / 2, fw, fh);
+              const radius = fh * 0.34 + Math.sin(tick * 0.05) * 8;
+              ctx.beginPath();
+              ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+              ctx.stroke();
+              ctx.font = '700 11px "Space Grotesk", sans-serif';
+              ctx.fillText(
+                "16:9 PROMOTIONAL FILM GATE",
+                cx - fw / 2 + 12,
+                cy - fh / 2 + 20,
+              );
+            } else if (activeCapIndex === 2) {
+              // Layered Swiss Poster & Story Cards
+              for (let i = -1; i <= 1; i++) {
+                const offset = i * 24 + Math.sin(tick * 0.04 + i) * 6;
+                ctx.strokeStyle =
+                  i === 0 ? "#FFFFFF" : "rgba(255,255,255,0.45)";
+                ctx.lineWidth = i === 0 ? 2 : 1;
+                ctx.strokeRect(
+                  cx - 75 + offset,
+                  cy - 105 - offset * 0.4,
+                  150,
+                  210,
+                );
+              }
+            } else if (activeCapIndex === 3) {
+              // Rotating Tactile Isometric Pedestal
+              const size = 68;
+              const angle = tick * 0.02;
+              ctx.save();
+              ctx.translate(cx, cy);
+              ctx.rotate(angle);
+              ctx.strokeRect(-size, -size, size * 2, size * 2);
+              ctx.rotate(Math.PI / 4);
+              ctx.strokeStyle = "rgba(255,255,255,0.5)";
+              ctx.strokeRect(
+                -size * 0.75,
+                -size * 0.75,
+                size * 1.5,
+                size * 1.5,
+              );
+              ctx.restore();
+            } else if (activeCapIndex === 4) {
+              // Synchronized Multi-Frame Campaign Matrix
+              const positions = [
+                [-75, -75, 65, 85],
+                [10, -75, 65, 40],
+                [10, -25, 65, 35],
+                [-75, 20, 150, 60],
+              ];
+              positions.forEach((p, idx) => {
+                const pulse = Math.sin(tick * 0.05 + idx) * 3;
+                ctx.strokeRect(
+                  cx + p[0] - pulse * 0.5,
+                  cy + p[1] - pulse * 0.5,
+                  p[2] + pulse,
+                  p[3] + pulse,
+                );
+              });
+            } else {
+              // Always-On Production Pulse Wave
+              ctx.beginPath();
+              for (let x = 20; x < w - 20; x += 6) {
+                const y =
+                  cy +
+                  Math.sin(x * 0.04 + tick * 0.06) * 45 * Math.cos(x * 0.01);
+                if (x === 20) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+              ctx.lineWidth = 2;
+              ctx.stroke();
+            }
+
+            if (!prefersReducedMotion) {
+              tick++;
+              requestAnimationFrame(drawCapMonitor);
+            }
+          }
+
+          drawCapMonitor();
+        }
+
+        /* ----------------------------------------------------------------------
+         16.5 SECTION 5: ILLUSTRATIVE CONCEPTUAL WORK CANVASES & MODAL
+         ---------------------------------------------------------------------- */
+        function initWorkShowcase() {
+          const studies = [
+            {
+              tag: "CONCEPTUAL STUDY 01 // SHORT-FORM VIDEO",
+              title: "MONOLITH — HIGH-CONTRAST PRODUCT LAUNCH REEL",
+              desc: "An illustrative 9:16 vertical video composition created to demonstrate how rapid visual pattern interruption, studio chiaroscuro lighting, and bold kinetic subtitles keep viewers engaged through the entire message.",
+              formats:
+                "9:16 Instagram Reels, YouTube Shorts, & Vertical Feed Cutdowns",
+              objective:
+                "Capture cold feed attention, communicate product distinction, and drive profile discovery.",
+            },
+            {
+              tag: "CONCEPTUAL STUDY 02 // POSTERS & STORIES",
+              title: "KINETIC GRID — PROMOTIONAL CAMPAIGN POSTERS",
+              desc: "An illustrative Swiss-brutalist poster and story series engineered for seasonal offers and brand announcements. Uses strict typographic hierarchy so the offer is understood in a single glance.",
+              formats:
+                "4:5 Feed Posters, Multi-Slide Carousels, & 9:16 Interactive Story Frames",
+              objective:
+                "Highlight promotions and offers with editorial sophistication rather than cluttered ad templates.",
+            },
+            {
+              tag: "CONCEPTUAL STUDY 03 // PRODUCT CREATIVES",
+              title: "CHIAROSCURO — TACTILE OBJECT & STUDIO LIGHTING",
+              desc: "An illustrative product-focused creative study showing how directional rim lighting, crisp shadow geometry, and minimal framing elevate the perceived value of physical products.",
+              formats: "1:1 & 4:5 Hero Product Stills + Motion Micro-Loops",
+              objective:
+                "Generate immediate customer desire and spotlight product quality.",
+            },
+            {
+              tag: "CONCEPTUAL STUDY 04 // CAMPAIGN ARCHITECTURE",
+              title: "MOMENTUM — MULTI-TOUCHPOINT CAMPAIGN SYSTEM",
+              desc: "An illustrative end-to-end campaign concept uniting a flagship promotional video with sequential reminder stories and product spotlights so audiences experience a cohesive narrative across platforms.",
+              formats:
+                "16:9 Flagship Promo Film + 9:16 Reel Teasers + Story Conversion Sequence",
+              objective:
+                "Guide audiences from initial brand discovery to direct customer inquiry.",
+            },
+          ];
+
+          // Render procedural editorial canvases for the 4 conceptual studies
+          const canvases = document.querySelectorAll(".work-canvas");
+          let frameCount = 0;
+
+          function renderWorkCanvases() {
+            canvases.forEach((canvas, idx) => {
+              const ctx = canvas.getContext("2d");
+              const rect = canvas.parentElement.getBoundingClientRect();
+              if (
+                canvas.width !== Math.floor(rect.width) ||
+                canvas.height !== Math.floor(rect.height)
+              ) {
+                canvas.width = Math.floor(rect.width);
+                canvas.height = Math.floor(rect.height);
+              }
+              const w = canvas.width;
+              const h = canvas.height;
+              ctx.fillStyle = "#080808";
+              ctx.fillRect(0, 0, w, h);
+
+              // Subtle architectural crosshairs
+              ctx.strokeStyle = "rgba(255,255,255,0.12)";
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(0, h / 2);
+              ctx.lineTo(w, h / 2);
+              ctx.moveTo(w / 2, 0);
+              ctx.lineTo(w / 2, h);
+              ctx.stroke();
+
+              ctx.strokeStyle = "#FFFFFF";
+              ctx.fillStyle = "#FFFFFF";
+
+              if (idx === 0) {
+                // Monolith vertical slabs
+                for (let i = -2; i <= 2; i++) {
+                  const x = w / 2 + i * 56;
+                  const bh = h * 0.48 + Math.sin(frameCount * 0.03 + i) * 28;
+                  ctx.strokeRect(x - 18, (h - bh) / 2, 36, bh);
+                }
+              } else if (idx === 1) {
+                // Swiss Kinetic Grid
+                const cols = 4;
+                const pad = 28;
+                const cellW = (w - pad * 2) / cols;
+                for (let c = 0; c < cols; c++) {
+                  const shift = Math.sin(frameCount * 0.025 + c) * 14;
+                  ctx.strokeRect(
+                    pad + c * cellW,
+                    h * 0.25 + shift,
+                    cellW - 8,
+                    h * 0.5,
+                  );
+                }
+              } else if (idx === 2) {
+                // Chiaroscuro Radial Light Study
+                for (let r = 24; r <= 120; r += 24) {
+                  ctx.beginPath();
+                  const offset = Math.cos(frameCount * 0.03 + r * 0.05) * 10;
+                  ctx.arc(w / 2 + offset, h / 2, r, 0, Math.PI * 2);
+                  ctx.stroke();
+                }
+              } else {
+                // Multi-Touchpoint Campaign Frames
+                const fW = w * 0.22;
+                const fH = h * 0.56;
+                for (let k = -1; k <= 1; k++) {
+                  const yOff = Math.sin(frameCount * 0.035 + k * 1.4) * 16;
+                  ctx.strokeRect(
+                    w / 2 + k * (fW + 24) - fW / 2,
+                    (h - fH) / 2 + yOff,
+                    fW,
+                    fH,
+                  );
+                }
+              }
+            });
+
+            if (!prefersReducedMotion) {
+              frameCount++;
+              requestAnimationFrame(renderWorkCanvases);
+            }
+          }
+          renderWorkCanvases();
+
+          // Modal Logic
+          const modal = document.getElementById("concept-modal");
+          const closeBtn = document.getElementById("close-modal-btn");
+          const inquireLink = document.getElementById("modal-inquire-link");
+          const tagEl = document.getElementById("modal-study-tag");
+          const titleEl = document.getElementById("modal-study-title");
+          const descEl = document.getElementById("modal-study-desc");
+          const fmtEl = document.getElementById("modal-study-formats");
+          const objEl = document.getElementById("modal-study-objective");
+
+          function openModal(idx) {
+            const s = studies[idx];
+            if (!s || !modal) return;
+            if (tagEl) tagEl.textContent = s.tag;
+            if (titleEl) titleEl.textContent = s.title;
+            if (descEl) descEl.textContent = s.desc;
+            if (fmtEl) fmtEl.textContent = s.formats;
+            if (objEl) objEl.textContent = s.objective;
+            modal.classList.add("is-open");
+            modal.setAttribute("aria-hidden", "false");
+          }
+
+          function closeModal() {
+            if (!modal) return;
+            modal.classList.remove("is-open");
+            modal.setAttribute("aria-hidden", "true");
+          }
+
+          document.querySelectorAll(".open-study-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const idx = parseInt(
+                btn.getAttribute("data-study-index") || "0",
+                10,
+              );
+              openModal(idx);
+            });
+          });
+
+          if (closeBtn) closeBtn.addEventListener("click", closeModal);
+          if (inquireLink) inquireLink.addEventListener("click", closeModal);
+          if (modal) {
+            modal.addEventListener("click", (e) => {
+              if (e.target === modal) closeModal();
+            });
+          }
+          window.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") closeModal();
+          });
+        }
+
+        /* ----------------------------------------------------------------------
+         16.6 SECTION 7: INTERACTIVE PROJECT BRIEF CONFIGURATOR
+         ---------------------------------------------------------------------- */
+        function initBriefConfigurator() {
+          const chips = document.querySelectorAll(".brief-chip");
+          const form = document.getElementById("brief-form");
+          const statusMsg = document.getElementById("brief-status-msg");
+
+          chips.forEach((chip) => {
+            chip.addEventListener("click", () => {
+              chip.classList.toggle("is-selected");
+            });
+          });
+
+          if (form) {
+            form.addEventListener("submit", (e) => {
+              e.preventDefault();
+              const selected = Array.from(
+                document.querySelectorAll(".brief-chip.is-selected"),
+              )
+                .map((c) => c.getAttribute("data-deliverable"))
+                .join(", ");
+              const brand =
+                (
+                  document.getElementById("brand-name-input")?.value || ""
+                ).trim() || "Our Brand";
+              const goal =
+                (
+                  document.getElementById("project-goal-input")?.value || ""
+                ).trim() ||
+                "Strengthen our digital presence and create high-impact social content.";
+
+              const subject = encodeURIComponent(
+                `Project Inquiry: ${brand} — Creative Marketing & Production`,
+              );
+              const body = encodeURIComponent(
+                `Hello Post-it Team,\n\n` +
+                  `We would like to discuss a creative marketing project for ${brand}.\n\n` +
+                  `Selected Deliverables:\n${selected || "Comprehensive Creative Production"}\n\n` +
+                  `Project Goals / Context:\n${goal}\n\n` +
+                  `Let's schedule a conversation.`,
+              );
+
+              if (statusMsg) {
+                statusMsg.textContent =
+                  "Opening your email client with your configured project brief...";
+              }
+              window.location.href = `mailto:mahajansrujan999@gamil.com?subject=${subject}&body=${body}`;
+            });
+          }
+        }
+
+        /* ----------------------------------------------------------------------
+         16.7 THREE.JS INITIALIZATION & SCULPTURAL PAPER / FRAME SCENE
+         ---------------------------------------------------------------------- */
+        function initThreeExperience() {
+          const canvas = document.getElementById("webgl-canvas");
+          if (!canvas || typeof THREE === "undefined") return;
+
+          let renderer, scene, camera;
+          try {
+            renderer = new THREE.WebGLRenderer({
+              canvas: canvas,
+              antialias: window.innerWidth > 768,
+              alpha: true,
+              powerPreference: "high-performance",
+            });
+          } catch (err) {
+            // Graceful fallback if WebGL context is unavailable
+            return;
+          }
+
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+          renderer.setSize(window.innerWidth, window.innerHeight);
+
+          scene = new THREE.Scene();
+
+          camera = new THREE.PerspectiveCamera(
+            38,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            100,
+          );
+          camera.position.set(0, 0, window.innerWidth < 768 ? 16.5 : 12.5);
+
+          // Monochromatic Studio Lighting
+          const ambientLight = new THREE.AmbientLight(0xffffff, 0.55);
+          scene.add(ambientLight);
+
+          const keyLight = new THREE.DirectionalLight(0xffffff, 1.35);
+          keyLight.position.set(7, 10, 9);
+          scene.add(keyLight);
+
+          const rimLight = new THREE.DirectionalLight(0xffffff, 0.85);
+          rimLight.position.set(-9, -6, -5);
+          scene.add(rimLight);
+
+          // Master Root Group
+          const sculptureGroup = new THREE.Group();
+          scene.add(sculptureGroup);
+
+          // Create Procedural Monochromatic Editorial Textures for the 3D Sheets
+          function createEditorialSheetTexture(index) {
+            const texCanvas = document.createElement("canvas");
+            texCanvas.width = 512;
+            texCanvas.height = 640;
+            const tCtx = texCanvas.getContext("2d");
+
+            const isDarkSheet = index % 2 === 0;
+            tCtx.fillStyle = isDarkSheet ? "#0F0F0F" : "#F4F4F4";
+            tCtx.fillRect(0, 0, 512, 640);
+
+            // Architectural Border
+            tCtx.strokeStyle = isDarkSheet ? "#FFFFFF" : "#000000";
+            tCtx.lineWidth = 8;
+            tCtx.strokeRect(18, 18, 476, 604);
+
+            // Inner Editorial Grid Lines
+            tCtx.lineWidth = 2;
+            tCtx.beginPath();
+            tCtx.moveTo(18, 110);
+            tCtx.lineTo(494, 110);
+            tCtx.moveTo(18, 520);
+            tCtx.lineTo(494, 520);
+            tCtx.stroke();
+
+            tCtx.fillStyle = isDarkSheet ? "#FFFFFF" : "#000000";
+            tCtx.font = "700 24px sans-serif";
+            const labels = [
+              "REEL // 9:16",
+              "FILM // 16:9",
+              "POSTER // 4:5",
+              "PRODUCT // 1:1",
+              "STORY // 9:16",
+              "CAMPAIGN // 06",
+              "ATTENTION // 07",
+            ];
+            tCtx.fillText(labels[index % labels.length], 42, 72);
+
+            // Monumental Graphic Bars
+            tCtx.fillRect(42, 160, 428, 54);
+            tCtx.fillRect(42, 236, 310, 54);
+
+            // Crosshair focal mark
+            tCtx.beginPath();
+            tCtx.arc(256, 395, 58, 0, Math.PI * 2);
+            tCtx.stroke();
+
+            const texture = new THREE.CanvasTexture(texCanvas);
+            texture.needsUpdate = true;
+            return texture;
+          }
+
+          // Build 7 Sculptural Layered Paper / Content Sheets with Subtle Curvature
+          const sheets = [];
+          const sheetCount = 7;
+
+          for (let i = 0; i < sheetCount; i++) {
+            const width = i % 2 === 0 ? 2.4 : 2.1;
+            const height = i % 2 === 0 ? 3.3 : 2.9;
+            const geo = new THREE.PlaneGeometry(width, height, 20, 20);
+
+            // Apply characteristic Post-it sculptural paper peel curvature
+            const pos = geo.attributes.position;
+            for (let v = 0; v < pos.count; v++) {
+              const vx = pos.getX(v);
+              const vy = pos.getY(v);
+              const bend =
+                Math.pow((vx + width * 0.5) / width, 2) *
+                  0.34 *
+                  (i % 2 === 0 ? 1 : -1) +
+                Math.sin(vy * 0.85) * 0.08;
+              pos.setZ(v, bend);
+            }
+            geo.computeVertexNormals();
+
+            const mat = new THREE.MeshStandardMaterial({
+              map: createEditorialSheetTexture(i),
+              roughness: 0.42,
+              metalness: 0.08,
+              side: THREE.DoubleSide,
+            });
+
+            const mesh = new THREE.Mesh(geo, mat);
+
+            // Store multiple formation coordinates for scroll & interactive playground states
+            const heroPos = {
+              x: 2.2 + (i - 3) * 0.42,
+              y: (i - 3) * 0.28,
+              z: (i - 3) * 0.38,
+              rx: -0.18 + i * 0.05,
+              ry: -0.48 + i * 0.06,
+              rz: (i - 3) * 0.07,
+            };
+
+            const campaignPos = {
+              x: ((i % 4) - 1.5) * 2.55,
+              y: (Math.floor(i / 4) - 0.5) * -3.35,
+              z: 0,
+              rx: 0,
+              ry: 0,
+              rz: 0,
+            };
+
+            const reelStackPos = {
+              x: (i - 3) * 1.45,
+              y: Math.sin(i * 0.8) * 0.35,
+              z: -Math.abs(i - 3) * 0.75,
+              rx: 0,
+              ry: (i - 3) * -0.22,
+              rz: 0,
+            };
+
+            const orbitalPos = {
+              x: Math.cos((i / sheetCount) * Math.PI * 2) * 4.2,
+              y: Math.sin((i / sheetCount) * Math.PI * 2) * 2.4,
+              z: Math.sin((i / sheetCount) * Math.PI * 2) * 1.8,
+              rx: 0.25 * Math.cos(i),
+              ry: 0.45 * Math.sin(i),
+              rz: (i - 3) * 0.12,
+            };
+
+            mesh.position.set(heroPos.x, heroPos.y, heroPos.z);
+            mesh.rotation.set(heroPos.rx, heroPos.ry, heroPos.rz);
+
+            mesh.userData = {
+              index: i,
+              heroPos,
+              campaignPos,
+              reelStackPos,
+              orbitalPos,
+              target: { ...heroPos },
+            };
+
+            sculptureGroup.add(mesh);
+            sheets.push(mesh);
+          }
+
+          // Subtle Architectural Wireframe Cage around the Sculpture
+          const cageGeo = new THREE.BoxGeometry(6.5, 4.8, 3.6);
+          const cageEdges = new THREE.EdgesGeometry(cageGeo);
+          const cageMat = new THREE.LineBasicMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.14,
+          });
+          const wireframeCage = new THREE.LineSegments(cageEdges, cageMat);
+          sculptureGroup.add(wireframeCage);
+
+          // Formation State Controller
+          let currentFormation = "hero";
+
+          function applyFormation(mode) {
+            currentFormation = mode;
+            sheets.forEach((mesh) => {
+              const u = mesh.userData;
+              let dest = u.heroPos;
+              if (mode === "campaign") dest = u.campaignPos;
+              else if (mode === "reel") dest = u.reelStackPos;
+              else if (mode === "orbital") dest = u.orbitalPos;
+
+              if (typeof gsap !== "undefined" && !prefersReducedMotion) {
+                gsap.to(u.target, {
+                  x: dest.x,
+                  y: dest.y,
+                  z: dest.z,
+                  rx: dest.rx,
+                  ry: dest.ry,
+                  rz: dest.rz,
+                  duration: 1.35,
+                  ease: "power3.inOut",
+                });
+              } else {
+                Object.assign(u.target, dest);
+              }
+            });
+          }
+
+          // Bind Playground Mode Buttons
+          const modeButtons = document.querySelectorAll(".playground-mode-btn");
+          modeButtons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const formation = btn.getAttribute("data-formation");
+              modeButtons.forEach((b) => b.classList.remove("is-active"));
+              btn.classList.add("is-active");
+              applyFormation(formation);
+            });
+          });
+
+          // Pointer Parallax Tracking
+          let pointerX = 0;
+          let pointerY = 0;
+          window.addEventListener(
+            "pointermove",
+            (e) => {
+              pointerX = (e.clientX / window.innerWidth - 0.5) * 2;
+              pointerY = (e.clientY / window.innerHeight - 0.5) * 2;
+            },
+            { passive: true },
+          );
+
+          // Connect Scroll Position to Sculpture Choreography
+          window.addEventListener(
+            "scroll",
+            () => {
+              const scrollY = window.scrollY;
+              const vh = window.innerHeight;
+              const playgroundEl = document.getElementById(
+                "creative-playground",
+              );
+
+              if (playgroundEl) {
+                const rect = playgroundEl.getBoundingClientRect();
+                const inPlayground =
+                  rect.top < vh * 0.65 && rect.bottom > vh * 0.25;
+                if (inPlayground && currentFormation === "hero") {
+                  const activeBtn = document.querySelector(
+                    ".playground-mode-btn.is-active",
+                  );
+                  const activeMode = activeBtn
+                    ? activeBtn.getAttribute("data-formation")
+                    : "campaign";
+                  applyFormation(activeMode);
+                } else if (
+                  !inPlayground &&
+                  scrollY < vh * 0.7 &&
+                  currentFormation !== "hero"
+                ) {
+                  applyFormation("hero");
+                }
+              }
+            },
+            { passive: true },
+          );
+
+          // Handle Viewport Resize Responsively
+          function onWindowResize() {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            camera.aspect = w / h;
+            camera.position.z = w < 600 ? 18 : w < 1024 ? 14.5 : 12.2;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+          }
+          window.addEventListener("resize", onWindowResize);
+          onWindowResize();
+
+          // Render Loop
+          const clock = new THREE.Clock();
+          function animateThree() {
+            const elapsed = clock.getElapsedTime();
+
+            sheets.forEach((mesh, idx) => {
+              const t = mesh.userData.target;
+              const floatOffset = prefersReducedMotion
+                ? 0
+                : Math.sin(elapsed * 1.15 + idx * 0.7) * 0.08;
+              mesh.position.x += (t.x - mesh.position.x) * 0.08;
+              mesh.position.y += (t.y + floatOffset - mesh.position.y) * 0.08;
+              mesh.position.z += (t.z - mesh.position.z) * 0.08;
+
+              mesh.rotation.x += (t.rx - mesh.rotation.x) * 0.08;
+              mesh.rotation.y += (t.ry - mesh.rotation.y) * 0.08;
+              mesh.rotation.z += (t.rz - mesh.rotation.z) * 0.08;
+            });
+
+            const targetGroupRotY = pointerX * 0.18;
+            const targetGroupRotX = pointerY * 0.12;
+            sculptureGroup.rotation.y +=
+              (targetGroupRotY - sculptureGroup.rotation.y) * 0.05;
+            sculptureGroup.rotation.x +=
+              (targetGroupRotX - sculptureGroup.rotation.x) * 0.05;
+
+            wireframeCage.rotation.y = elapsed * 0.06;
+
+            renderer.render(scene, camera);
+            requestAnimationFrame(animateThree);
+          }
+          requestAnimationFrame(animateThree);
+        }
+
+        /* ----------------------------------------------------------------------
+         16.8 GSAP & SCROLLTRIGGER CHOREOGRAPHY
+         ---------------------------------------------------------------------- */
+        function initMotionSystem() {
+          if (typeof gsap === "undefined" || prefersReducedMotion) return;
+
+          if (typeof ScrollTrigger !== "undefined") {
+            gsap.registerPlugin(ScrollTrigger);
+          }
+
+          // Hero Opening Sequence
+          const heroTl = gsap.timeline({ defaults: { ease: "power4.out" } });
+          heroTl
+            .from("#hero-kicker", { y: 20, opacity: 0, duration: 0.75 })
+            .from(
+              "#hero-title-main .line-inner",
+              { yPercent: 105, duration: 1.0, stagger: 0.1 },
+              "-=0.45",
+            )
+            .from(
+              "#hero-title-sub .line-inner",
+              { yPercent: 105, duration: 0.95 },
+              "-=0.65",
+            )
+            .from(
+              "#hero-bottom",
+              { y: 24, opacity: 0, duration: 0.85 },
+              "-=0.55",
+            );
+
+          if (typeof ScrollTrigger === "undefined") return;
+
+          // Masked Headline Reveals across Sections
+          document.querySelectorAll(".reveal-headline").forEach((headline) => {
+            const lines = headline.querySelectorAll(".line-inner");
+            if (!lines.length) return;
+            gsap.from(lines, {
+              yPercent: 105,
+              duration: 0.95,
+              stagger: 0.1,
+              ease: "power4.out",
+              scrollTrigger: {
+                trigger: headline,
+                start: "top 86%",
+                toggleActions: "play none none none",
+              },
+            });
+          });
+
+          // Editorial Content Fade-Ups
+          document.querySelectorAll(".reveal-fade").forEach((block) => {
+            gsap.from(block, {
+              y: 32,
+              opacity: 0,
+              duration: 0.85,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: block,
+                start: "top 88%",
+                toggleActions: "play none none none",
+              },
+            });
+          });
+        }
+
+        /* ----------------------------------------------------------------------
+         16.9 BOOTSTRAP EVERYTHING WHEN DOM IS READY
+         ---------------------------------------------------------------------- */
+        window.addEventListener("DOMContentLoaded", () => {
+          const yearEl = document.getElementById("footer-year");
+          if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+          initNavigation();
+          initCustomCursor();
+          initAttentionInspector();
+          initCapabilitiesMonitor();
+          initWorkShowcase();
+          initBriefConfigurator();
+          initThreeExperience();
+          initMotionSystem();
+        });
+      })();
+    </script>
+  </body>
+</html>
